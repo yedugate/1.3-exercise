@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Euclid’s Division Lemma – 150 Interactive Questions</title>
+
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(','\\)'], ['$', '$']], displayMath: [['\\[','\\]']] },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<style>
+:root {
+  --ink:#172033;
+  --muted:#64748b;
+  --brand:#3157d5;
+  --brand2:#7c3aed;
+  --soft:#f6f8ff;
+  --ok:#0f9f6e;
+  --bad:#d93025;
+  --warn:#f59e0b;
+  --line:#dbe4ff;
+  --paper:#ffffff;
+}
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  margin:0;
+  font-family: "Segoe UI", Arial, sans-serif;
+  color:var(--ink);
+  background:
+    radial-gradient(circle at top left, #eaf0ff 0, transparent 32%),
+    linear-gradient(180deg, #f8fbff 0%, #eef3ff 100%);
+  line-height:1.65;
+}
+.wrapper {
+  max-width:1180px;
+  margin:0 auto;
+  padding:22px;
+}
+.hero {
+  background:linear-gradient(135deg, #243b8f, #3157d5 55%, #7c3aed);
+  color:white;
+  border-radius:28px;
+  padding:34px;
+  box-shadow:0 18px 45px rgba(49,87,213,.25);
+  position:relative;
+  overflow:hidden;
+}
+.hero:after {
+  content:"∴  ∵  ≤  ≥  ∈  ℤ  q  r";
+  position:absolute;
+  right:24px;
+  bottom:8px;
+  opacity:.14;
+  font-size:58px;
+  font-family: Georgia, serif;
+  white-space:nowrap;
+}
+.badge {
+  display:inline-flex;
+  gap:8px;
+  align-items:center;
+  padding:7px 12px;
+  border-radius:999px;
+  background:rgba(255,255,255,.16);
+  border:1px solid rgba(255,255,255,.28);
+  font-weight:700;
+  font-size:13px;
+}
+h1 { margin:16px 0 8px; font-size:34px; line-height:1.18; }
+.subtitle { font-size:17px; max-width:850px; opacity:.95; }
+.panel-grid {
+  display:grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap:14px;
+  margin:20px 0;
+}
+.stat {
+  background:rgba(255,255,255,.14);
+  padding:14px;
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,.2);
+}
+.stat strong { display:block; font-size:26px; }
+.toolbar {
+  position:sticky;
+  top:0;
+  z-index:10;
+  margin:18px 0;
+  padding:12px;
+  background:rgba(255,255,255,.92);
+  backdrop-filter: blur(10px);
+  border:1px solid var(--line);
+  border-radius:20px;
+  box-shadow:0 10px 28px rgba(36,59,143,.08);
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  align-items:center;
+}
+button, select, input {
+  font-family:inherit;
+}
+.btn {
+  border:none;
+  border-radius:14px;
+  padding:10px 14px;
+  cursor:pointer;
+  font-weight:800;
+  color:white;
+  background:linear-gradient(135deg, var(--brand), var(--brand2));
+  box-shadow:0 8px 20px rgba(49,87,213,.18);
+}
+.btn.secondary {
+  color:var(--ink);
+  background:#fff;
+  border:1px solid var(--line);
+  box-shadow:none;
+}
+.btn.good { background:linear-gradient(135deg, #059669, #10b981); }
+.btn.warn { background:linear-gradient(135deg, #d97706, #f59e0b); }
+select, .search {
+  border:1px solid var(--line);
+  background:white;
+  border-radius:14px;
+  padding:10px 12px;
+  min-height:42px;
+}
+.search { min-width:230px; }
+.progress-wrap {
+  flex:1;
+  min-width:180px;
+  background:#edf2ff;
+  border-radius:999px;
+  overflow:hidden;
+  height:13px;
+  border:1px solid #d7e0ff;
+}
+.progress-bar {
+  height:100%;
+  width:0;
+  background:linear-gradient(90deg, #22c55e, #3157d5);
+  transition:.3s ease;
+}
+.card {
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:24px;
+  margin:16px 0;
+  padding:22px;
+  box-shadow:0 10px 32px rgba(36,59,143,.07);
+  break-inside: avoid;
+}
+.card-head {
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:14px;
+}
+.qno {
+  font-weight:900;
+  color:var(--brand);
+  font-size:14px;
+  letter-spacing:.02em;
+}
+.level {
+  padding:5px 10px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:900;
+  background:#eff6ff;
+  color:#1d4ed8;
+  border:1px solid #bfdbfe;
+}
+.level.Intermediate { background:#fff7ed; color:#c2410c; border-color:#fed7aa; }
+.level.Advanced { background:#f5f3ff; color:#6d28d9; border-color:#ddd6fe; }
+.type {
+  padding:5px 10px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:900;
+  background:#ecfdf5;
+  color:#047857;
+  border:1px solid #a7f3d0;
+}
+.question {
+  font-size:18px;
+  font-weight:750;
+  margin:10px 0 14px;
+}
+.options {
+  display:grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap:10px;
+}
+.option {
+  border:1px solid var(--line);
+  padding:12px;
+  border-radius:16px;
+  background:#fbfdff;
+  cursor:pointer;
+  min-height:50px;
+  display:flex;
+  align-items:center;
+  gap:9px;
+}
+.option:hover { border-color:#90a8ff; background:#f5f7ff; }
+.option.selected { border-color:var(--brand); background:#eef3ff; }
+.option.correct { border-color:#10b981; background:#ecfdf5; }
+.option.wrong { border-color:#ef4444; background:#fef2f2; }
+.blank-row {
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  align-items:center;
+  margin:12px 0;
+}
+.blank-input {
+  border:2px solid var(--line);
+  border-radius:14px;
+  padding:11px 13px;
+  min-width:240px;
+  font-size:16px;
+}
+.match-table {
+  width:100%;
+  border-collapse:separate;
+  border-spacing:0 10px;
+}
+.match-table td {
+  background:#fbfdff;
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  padding:12px;
+}
+.match-table td:first-child {
+  border-left:1px solid var(--line);
+  border-radius:14px 0 0 14px;
+  font-weight:700;
+  width:45%;
+}
+.match-table td:last-child {
+  border-right:1px solid var(--line);
+  border-radius:0 14px 14px 0;
+}
+.feedback {
+  margin-top:12px;
+  padding:12px 14px;
+  border-radius:16px;
+  display:none;
+}
+.feedback.show { display:block; }
+.feedback.ok { background:#ecfdf5; border:1px solid #a7f3d0; color:#065f46; }
+.feedback.bad { background:#fef2f2; border:1px solid #fecaca; color:#991b1b; }
+.solution {
+  margin-top:8px;
+  color:#334155;
+}
+.report {
+  background:linear-gradient(135deg, #ffffff, #f7faff);
+  border:2px solid #b8c7ff;
+}
+.reward {
+  font-size:26px;
+  font-weight:950;
+  color:#243b8f;
+}
+.small { color:var(--muted); font-size:13px; }
+.pillrow { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+.pill {
+  border-radius:999px;
+  padding:7px 10px;
+  border:1px solid var(--line);
+  background:#fff;
+  font-size:13px;
+  font-weight:700;
+}
+.answer-key {
+  max-height:360px;
+  overflow:auto;
+  background:#0f172a;
+  color:#e5e7eb;
+  padding:14px;
+  border-radius:16px;
+  font-family: Consolas, monospace;
+  font-size:13px;
+  display:none;
+}
+.footer-note {
+  text-align:center;
+  color:#64748b;
+  margin:28px 0 10px;
+}
+@media(max-width:800px){
+  .panel-grid { grid-template-columns: repeat(2,1fr); }
+  .options { grid-template-columns:1fr; }
+  h1 { font-size:27px; }
+  .wrapper { padding:12px; }
+  .hero { padding:24px; border-radius:22px; }
+}
+@media print {
+  body { background:white; }
+  .toolbar, .no-print, .btn { display:none !important; }
+  .wrapper { max-width:100%; padding:0; }
+  .hero { background:white !important; color:black; box-shadow:none; border:2px solid #111; }
+  .card { box-shadow:none; border:1px solid #888; page-break-inside:avoid; }
+  .feedback { display:block !important; }
+  .answer-key { display:block !important; max-height:none; background:white; color:black; border:1px solid #888; }
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <section class="hero">
+    <span class="badge">Class 10 CBSE • Real Numbers • Euclid’s Division Lemma</span>
+    <h1>150 Interactive Questions: MCQ, Fill in the Blanks, Match the Following</h1>
+    <p class="subtitle">
+      Original RD Sharma-style practice based on the uploaded attachment. Questions are arranged from Basic → Intermediate → Advanced,
+      with critical and indirect reasoning. Click answers to reveal textbook-style solutions.
+    </p>
+    <div class="panel-grid">
+      <div class="stat"><strong>50</strong>MCQs</div>
+      <div class="stat"><strong>50</strong>Fill in the blanks</div>
+      <div class="stat"><strong>50</strong>Match the following</div>
+      <div class="stat"><strong>PDF</strong>Answer sheet download</div>
+    </div>
+  </section>
+
+  <div class="toolbar no-print">
+    <button class="btn" onclick="showAll()">Show All Answers</button>
+    <button class="btn secondary" onclick="hideAll()">Hide Answers</button>
+    <button class="btn good" onclick="finishTest()">Final Reward Report</button>
+    <button class="btn warn" onclick="downloadPDF()">Download PDF Answer Sheet</button>
+    <button class="btn secondary" onclick="window.print()">Print</button>
+    <select id="typeFilter" onchange="render()">
+      <option value="all">All Types</option>
+      <option value="mcq">MCQs</option>
+      <option value="blank">Fill in the blanks</option>
+      <option value="match">Match the following</option>
+    </select>
+    <select id="levelFilter" onchange="render()">
+      <option value="all">All Levels</option>
+      <option value="Basic">Basic</option>
+      <option value="Intermediate">Intermediate</option>
+      <option value="Advanced">Advanced</option>
+    </select>
+    <input class="search" id="searchBox" oninput="render()" placeholder="Search question..." />
+    <div class="progress-wrap"><div id="progressBar" class="progress-bar"></div></div>
+    <span id="scoreText" class="small">Score: 0 / 150</span>
+  </div>
+
+  <section class="card">
+    <h2>Core Formula</h2>
+    <p>Euclid’s Division Lemma:</p>
+    <p style="text-align:center;font-size:24px;">\[a=bq+r,\quad 0\le r<b\]</p>
+    <p class="small">Use this formula for every question. For divisor \(b\), possible remainders are \(0,1,2,\ldots,b-1\).</p>
+  </section>
+
+  <main id="quiz"></main>
+
+  <section class="card report" id="report">
+    <h2>Final Reward Page</h2>
+    <div class="reward" id="rewardTitle">Complete the questions to unlock your reward.</div>
+    <p id="rewardMsg">Your score, accuracy, level-wise performance and answer sheet will appear here.</p>
+    <div class="pillrow" id="reportPills"></div>
+    <h3>Answer Sheet Preview</h3>
+    <div class="answer-key" id="answerKey"></div>
+  </section>
+
+  <p class="footer-note">Designed for printable textbook-style maths practice. Symbols are rendered with MathJax.</p>
+</div>
+
+<script>
+const DATA = {"mcq": [{"type": "mcq", "level": "Basic", "question": "In Euclid’s Division Lemma, if \\(a=bq+r\\), the correct condition on \\(r\\) is:", "options": ["\\(0<r<b\\)", "\\(0\\le r<b\\)", "\\(0\\le b<r\\)", "\\(r=b\\)"], "answer": 1, "explanation": "The remainder must be greater than or equal to 0 and less than the divisor."}, {"type": "mcq", "level": "Basic", "question": "When a positive integer is divided by \\(2\\), possible remainders are:", "options": ["\\(0,1\\)", "\\(1,2\\)", "\\(0,1,2\\)", "\\(2,3\\)"], "answer": 0, "explanation": "Remainders are always from \\(0\\) to \\(b-1\\)."}, {"type": "mcq", "level": "Basic", "question": "Every positive odd integer can be written as:", "options": ["\\(2q\\)", "\\(2q+1\\)", "\\(2q+2\\)", "\\(q^2\\)"], "answer": 1, "explanation": "Odd integers leave remainder 1 when divided by 2."}, {"type": "mcq", "level": "Basic", "question": "Every positive even integer can be written as:", "options": ["\\(2q\\)", "\\(2q+1\\)", "\\(4q+1\\)", "\\(3q+2\\)"], "answer": 0, "explanation": "Even integers are exactly divisible by 2."}, {"type": "mcq", "level": "Basic", "question": "When an integer is divided by \\(3\\), possible forms are:", "options": ["\\(3q,3q+1\\)", "\\(3q,3q+1,3q+2\\)", "\\(3q+1,3q+2,3q+3\\)", "\\(q,q+1,q+2\\)"], "answer": 1, "explanation": "Remainders possible with divisor 3 are 0, 1, 2."}, {"type": "mcq", "level": "Basic", "question": "The form \\(4q+2\\) is always:", "options": ["odd", "even", "prime", "negative"], "answer": 1, "explanation": "\\(4q+2=2(2q+1)\\), so it is even."}, {"type": "mcq", "level": "Basic", "question": "If \\(17=5\\times3+2\\), then remainder is:", "options": ["\\(5\\)", "\\(3\\)", "\\(2\\)", "\\(17\\)"], "answer": 2, "explanation": "In \\(a=bq+r\\), \\(r=2\\)."}, {"type": "mcq", "level": "Basic", "question": "The least possible remainder in Euclid’s Division Lemma is:", "options": ["\\(1\\)", "\\(0\\)", "\\(-1\\)", "\\(b\\)"], "answer": 1, "explanation": "Remainder can be zero when division is exact."}, {"type": "mcq", "level": "Basic", "question": "The greatest possible remainder when dividing by \\(6\\) is:", "options": ["\\(6\\)", "\\(5\\)", "\\(4\\)", "\\(7\\)"], "answer": 1, "explanation": "Greatest possible remainder is \\(b-1=5\\)."}, {"type": "mcq", "level": "Basic", "question": "Which is not a valid remainder when dividing by \\(4\\)?", "options": ["\\(0\\)", "\\(1\\)", "\\(3\\)", "\\(4\\)"], "answer": 3, "explanation": "Remainder must be less than divisor."}, {"type": "mcq", "level": "Basic", "question": "Which form represents an integer leaving remainder \\(2\\) on division by \\(5\\)?", "options": ["\\(5q\\)", "\\(5q+1\\)", "\\(5q+2\\)", "\\(2q+5\\)"], "answer": 2, "explanation": "Remainder appears as the added part."}, {"type": "mcq", "level": "Basic", "question": "If \\(a=7q+6\\), the remainder on division by \\(7\\) is:", "options": ["\\(7\\)", "\\(6\\)", "\\(q\\)", "\\(1\\)"], "answer": 1, "explanation": "The remainder is 6 because \\(0\\le6<7\\)."}, {"type": "mcq", "level": "Basic", "question": "The number \\(23\\) is of the form:", "options": ["\\(3q\\)", "\\(3q+1\\)", "\\(3q+2\\)", "only \\(2q\\)"], "answer": 2, "explanation": "\\(23=3(7)+2\\)."}, {"type": "mcq", "level": "Basic", "question": "The number \\(28\\) is of the form:", "options": ["\\(4q\\)", "\\(4q+1\\)", "\\(4q+2\\)", "\\(4q+3\\)"], "answer": 0, "explanation": "\\(28=4(7)\\)."}, {"type": "mcq", "level": "Basic", "question": "The number \\(31\\) is of the form:", "options": ["\\(4q\\)", "\\(4q+1\\)", "\\(4q+2\\)", "\\(4q+3\\)"], "answer": 3, "explanation": "\\(31=4(7)+3\\)."}, {"type": "mcq", "level": "Basic", "question": "A number of the form \\(6q+5\\) is:", "options": ["always even", "always odd", "always divisible by 6", "always divisible by 3"], "answer": 1, "explanation": "\\(6q\\) is even and adding 5 gives odd."}, {"type": "mcq", "level": "Basic", "question": "The divisor to express an integer as \\(5q,5q+1,\\ldots,5q+4\\) is:", "options": ["\\(2\\)", "\\(3\\)", "\\(4\\)", "\\(5\\)"], "answer": 3, "explanation": "The coefficient of \\(q\\) is the divisor."}, {"type": "mcq", "level": "Intermediate", "question": "Any positive odd integer is of the form:", "options": ["\\(4q\\) or \\(4q+2\\)", "\\(4q+1\\) or \\(4q+3\\)", "\\(3q\\) only", "\\(6q\\) only"], "answer": 1, "explanation": "Among \\(4q,4q+1,4q+2,4q+3\\), only \\(4q+1\\) and \\(4q+3\\) are odd."}, {"type": "mcq", "level": "Intermediate", "question": "The square of an odd integer is always of the form:", "options": ["\\(4q\\)", "\\(4q+1\\)", "\\(4q+2\\)", "\\(4q+3\\)"], "answer": 1, "explanation": "If \\(x=2m+1\\), then \\(x^2=4(m^2+m)+1\\)."}, {"type": "mcq", "level": "Intermediate", "question": "The square of any integer can never be of the form:", "options": ["\\(3m\\)", "\\(3m+1\\)", "\\(3m+2\\)", "\\(4m+1\\)"], "answer": 2, "explanation": "Squares leave remainder 0 or 1 when divided by 3."}, {"type": "mcq", "level": "Intermediate", "question": "If \\(n=3q+2\\), then \\(n^2\\) is of the form:", "options": ["\\(3m\\)", "\\(3m+1\\)", "\\(3m+2\\)", "\\(9m+8\\)"], "answer": 1, "explanation": "\\((3q+2)^2=3(3q^2+4q+1)+1\\)."}, {"type": "mcq", "level": "Intermediate", "question": "If \\(n=3q+1\\), then \\(n^2\\) is of the form:", "options": ["\\(3m\\)", "\\(3m+1\\)", "\\(3m+2\\)", "\\(9m+1\\)"], "answer": 1, "explanation": "\\((3q+1)^2=3(3q^2+2q)+1\\)."}, {"type": "mcq", "level": "Intermediate", "question": "If \\(n=3q\\), then \\(n^2\\) is of the form:", "options": ["\\(3m\\)", "\\(3m+1\\)", "\\(3m+2\\)", "\\(3m+3\\)"], "answer": 0, "explanation": "\\((3q)^2=9q^2=3(3q^2)\\)."}, {"type": "mcq", "level": "Intermediate", "question": "Which identity is used to prove square-based forms?", "options": ["\\((a+b)^2=a^2+2ab+b^2\\)", "\\((a+b)^2=a^2+b^2\\)", "\\((a+b)^3=a^3+b^3\\)", "\\(a^2-b^2=a-b\\)"], "answer": 0, "explanation": "Expansion of square is required."}, {"type": "mcq", "level": "Intermediate", "question": "The square of an even integer is divisible by:", "options": ["\\(2\\) only", "\\(3\\) always", "\\(4\\)", "\\(5\\) always"], "answer": 2, "explanation": "If \\(x=2m\\), then \\(x^2=4m^2\\)."}, {"type": "mcq", "level": "Intermediate", "question": "If \\(x=2m+1\\), then \\(x^2\\) equals:", "options": ["\\(4m^2+1\\)", "\\(4m^2+4m+1\\)", "\\(2m^2+1\\)", "\\(4m+1\\)"], "answer": 1, "explanation": "Use \\((2m+1)^2\\)."}, {"type": "mcq", "level": "Intermediate", "question": "The form \\(6q+3\\) is:", "options": ["always even", "always odd", "always of form \\(6q\\)", "always prime"], "answer": 1, "explanation": "\\(6q\\) is even; adding 3 gives odd."}, {"type": "mcq", "level": "Intermediate", "question": "Which forms are possible for a positive odd integer with divisor \\(6\\)?", "options": ["\\(6q,6q+2,6q+4\\)", "\\(6q+1,6q+3,6q+5\\)", "\\(6q,6q+1\\)", "\\(6q+2,6q+4\\)"], "answer": 1, "explanation": "Odd forms occur with odd remainders 1, 3, 5."}, {"type": "mcq", "level": "Intermediate", "question": "Which value of \\(r\\) gives \\(a=4q+3\\)?", "options": ["\\(0\\)", "\\(1\\)", "\\(2\\)", "\\(3\\)"], "answer": 3, "explanation": "The added term is the remainder."}, {"type": "mcq", "level": "Intermediate", "question": "If \\(a=4q+2\\), why is it not an odd integer?", "options": ["Because \\(4q+2=2(2q+1)\\)", "Because \\(4q+2=3q+1\\)", "Because \\(q\\) is odd", "Because \\(2\\) is prime"], "answer": 0, "explanation": "It has factor 2."}, {"type": "mcq", "level": "Intermediate", "question": "Which number is of the form \\(4q+1\\)?", "options": ["\\(14\\)", "\\(17\\)", "\\(22\\)", "\\(27\\)"], "answer": 1, "explanation": "\\(17=4(4)+1\\)."}, {"type": "mcq", "level": "Intermediate", "question": "Which number is of the form \\(4q+3\\)?", "options": ["\\(25\\)", "\\(29\\)", "\\(31\\)", "\\(36\\)"], "answer": 2, "explanation": "\\(31=4(7)+3\\)."}, {"type": "mcq", "level": "Intermediate", "question": "If divisor is \\(8\\), possible remainders are:", "options": ["\\(1\\) to \\(8\\)", "\\(0\\) to \\(7\\)", "\\(0\\) to \\(8\\)", "\\(2\\) to \\(8\\)"], "answer": 1, "explanation": "Remainders go from 0 to 7."}, {"type": "mcq", "level": "Intermediate", "question": "Which expression is definitely an integer if \\(q\\) is an integer?", "options": ["\\(q^2+q\\)", "\\(q/2\\)", "\\(1/q\\)", "\\(\\sqrt q\\)"], "answer": 0, "explanation": "Sum and product of integers are integers."}, {"type": "mcq", "level": "Advanced", "question": "The cube of any positive integer is of the form:", "options": ["\\(9m,9m+1,9m+8\\)", "\\(9m,9m+2,9m+3\\)", "\\(3m+2\\) only", "\\(4m+1\\) only"], "answer": 0, "explanation": "Using \\(n=3q,3q+1,3q+2\\), cubes become these forms."}, {"type": "mcq", "level": "Advanced", "question": "If \\(n=3q+2\\), then \\(n^3\\) is of the form:", "options": ["\\(9m\\)", "\\(9m+1\\)", "\\(9m+8\\)", "\\(3m+2\\)"], "answer": 2, "explanation": "\\((3q+2)^3=9(3q^3+6q^2+4q)+8\\)."}, {"type": "mcq", "level": "Advanced", "question": "If \\(n=3q+1\\), then \\(n^3\\) is of the form:", "options": ["\\(9m\\)", "\\(9m+1\\)", "\\(9m+8\\)", "\\(9m+3\\)"], "answer": 1, "explanation": "\\((3q+1)^3=9(3q^3+3q^2+q)+1\\)."}, {"type": "mcq", "level": "Advanced", "question": "If \\(n=3q\\), then \\(n^3\\) is of the form:", "options": ["\\(9m\\)", "\\(9m+1\\)", "\\(9m+8\\)", "\\(3m+1\\) only"], "answer": 0, "explanation": "\\((3q)^3=27q^3=9(3q^3)\\)."}, {"type": "mcq", "level": "Advanced", "question": "The identity required for cube-based proof is:", "options": ["\\((a+b)^3=a^3+3a^2b+3ab^2+b^3\\)", "\\((a+b)^3=a^3+b^3\\)", "\\((a-b)^2=a^2+b^2\\)", "\\(a^3-b^3=a-b\\)"], "answer": 0, "explanation": "The full cube identity is needed."}, {"type": "mcq", "level": "Advanced", "question": "A perfect square cannot leave which remainder on division by \\(3\\)?", "options": ["\\(0\\)", "\\(1\\)", "\\(2\\)", "\\(0\\) or \\(1\\)"], "answer": 2, "explanation": "Squares modulo 3 are 0 or 1."}, {"type": "mcq", "level": "Advanced", "question": "If \\(N^2=3m+2\\), then \\(N\\) is:", "options": ["definitely positive", "definitely even", "not an integer square case", "divisible by 3"], "answer": 2, "explanation": "No integer square has remainder 2 on division by 3."}, {"type": "mcq", "level": "Advanced", "question": "Which statement is true?", "options": ["All cubes are \\(9m+8\\)", "All squares are \\(3m+2\\)", "Every cube is \\(9m\\), \\(9m+1\\), or \\(9m+8\\)", "Every odd number is \\(4q\\)"], "answer": 2, "explanation": "It follows from Euclid’s lemma using divisor 3."}, {"type": "mcq", "level": "Advanced", "question": "The remainder of \\(2^3\\) when compared with multiples of \\(9\\) is:", "options": ["\\(0\\)", "\\(1\\)", "\\(8\\)", "\\(2\\)"], "answer": 2, "explanation": "\\(2^3=8=9(0)+8\\)."}, {"type": "mcq", "level": "Advanced", "question": "The number \\(64\\) as cube form is:", "options": ["\\(9m\\)", "\\(9m+1\\)", "\\(9m+8\\)", "\\(3m+2\\)"], "answer": 1, "explanation": "\\(64=9(7)+1\\)."}, {"type": "mcq", "level": "Advanced", "question": "The number \\(216\\) as cube form is:", "options": ["\\(9m\\)", "\\(9m+1\\)", "\\(9m+8\\)", "\\(4m+1\\)"], "answer": 0, "explanation": "\\(216=9(24)\\)."}, {"type": "mcq", "level": "Advanced", "question": "In proof, why can \\(m=3q^3+6q^2+4q\\) be used?", "options": ["It is an integer expression", "It is always prime", "It is always zero", "It is a remainder"], "answer": 0, "explanation": "Since \\(q\\) is integer, this expression is integer."}, {"type": "mcq", "level": "Advanced", "question": "Which is a critical indirect conclusion from square form modulo \\(3\\)?", "options": ["\\(3m+2\\) is never a perfect square", "Every \\(3m+1\\) is prime", "Every \\(3m\\) is odd", "No integer is \\(3q+2\\)"], "answer": 0, "explanation": "The remainder 2 is impossible for perfect squares."}, {"type": "mcq", "level": "Advanced", "question": "If an integer has form \\(5q+4\\), the divisor used is:", "options": ["\\(4\\)", "\\(5\\)", "\\(9\\)", "\\(q\\)"], "answer": 1, "explanation": "Coefficient of \\(q\\) gives divisor."}, {"type": "mcq", "level": "Advanced", "question": "For divisor \\(b\\), the number of possible remainders is:", "options": ["\\(b-1\\)", "\\(b\\)", "\\(b+1\\)", "\\(2b\\)"], "answer": 1, "explanation": "The remainders are \\(0,1,2,\\ldots,b-1\\), totaling \\(b\\)."}, {"type": "mcq", "level": "Advanced", "question": "Which expression is not a valid Euclidean form for divisor \\(3\\)?", "options": ["\\(3q\\)", "\\(3q+1\\)", "\\(3q+2\\)", "\\(3q+3\\)"], "answer": 3, "explanation": "\\(3q+3=3(q+1)\\), remainder 3 is not valid."}], "blank": [{"type": "blank", "level": "Basic", "question": "In \\(a=bq+r\\), \\(r\\) is called the ______.", "answer": "remainder", "explanation": "The leftover part after division is called remainder."}, {"type": "blank", "level": "Basic", "question": "The condition on remainder is \\(0\\le r<\\) ______.", "answer": "b", "explanation": "Remainder must be less than divisor \\(b\\)."}, {"type": "blank", "level": "Basic", "question": "Every even integer is of the form ______.", "answer": "2q", "explanation": "Even integers are divisible by 2."}, {"type": "blank", "level": "Basic", "question": "Every odd integer is of the form ______.", "answer": "2q+1", "explanation": "Odd integers leave remainder 1 when divided by 2."}, {"type": "blank", "level": "Basic", "question": "When divided by \\(3\\), possible remainders are \\(0,1,\\) ______.", "answer": "2", "explanation": "Remainders are 0 to divisor minus 1."}, {"type": "blank", "level": "Basic", "question": "When divided by \\(4\\), possible remainders are \\(0,1,2,\\) ______.", "answer": "3", "explanation": "Remainders stop at 3."}, {"type": "blank", "level": "Basic", "question": "\\(17=5\\times3+2\\), so quotient is ______.", "answer": "3", "explanation": "The quotient is 3."}, {"type": "blank", "level": "Basic", "question": "\\(17=5\\times3+2\\), so remainder is ______.", "answer": "2", "explanation": "The remainder is 2."}, {"type": "blank", "level": "Basic", "question": "If divisor is \\(5\\), the greatest possible remainder is ______.", "answer": "4", "explanation": "Greatest remainder is \\(5-1\\)."}, {"type": "blank", "level": "Basic", "question": "If divisor is \\(6\\), the least possible remainder is ______.", "answer": "0", "explanation": "Remainder can be zero."}, {"type": "blank", "level": "Basic", "question": "Numbers of the form \\(3q\\) are divisible by ______.", "answer": "3", "explanation": "They are multiples of 3."}, {"type": "blank", "level": "Basic", "question": "The form \\(5q+2\\) leaves remainder ______ when divided by \\(5\\).", "answer": "2", "explanation": "The added term is the remainder."}, {"type": "blank", "level": "Basic", "question": "\\(a=10q+9\\) leaves remainder ______ on division by \\(10\\).", "answer": "9", "explanation": "Remainder is 9."}, {"type": "blank", "level": "Basic", "question": "The number \\(25\\) is of the form \\(4q+\\) ______.", "answer": "1", "explanation": "\\(25=4(6)+1\\)."}, {"type": "blank", "level": "Basic", "question": "\\(31=4(7)+\\) ______.", "answer": "3", "explanation": "31 leaves remainder 3 when divided by 4."}, {"type": "blank", "level": "Basic", "question": "The forms for divisor \\(3\\) are \\(3q,3q+1,\\) ______.", "answer": "3q+2", "explanation": "Three possible forms exist."}, {"type": "blank", "level": "Intermediate", "question": "An odd integer with divisor \\(4\\) is of the form \\(4q+1\\) or ______.", "answer": "4q+3", "explanation": "Only remainders 1 and 3 give odd numbers."}, {"type": "blank", "level": "Intermediate", "question": "\\(4q+2=2(\\) ______ \\().\\)", "answer": "2q+1", "explanation": "\\(4q+2=2(2q+1)\\)."}, {"type": "blank", "level": "Intermediate", "question": "The square of an odd integer is of the form ______.", "answer": "4q+1", "explanation": "Odd square leaves remainder 1 when divided by 4."}, {"type": "blank", "level": "Intermediate", "question": "If \\(x=2m+1\\), then \\(x^2=4m^2+4m+\\) ______.", "answer": "1", "explanation": "Expansion gives \\(4m^2+4m+1\\)."}, {"type": "blank", "level": "Intermediate", "question": "\\(4m^2+4m+1=4(\\) ______ \\()+1\\).", "answer": "m^2+m", "explanation": "Take 4 common."}, {"type": "blank", "level": "Intermediate", "question": "The square of an even integer is divisible by ______.", "answer": "4", "explanation": "\\((2m)^2=4m^2\\)."}, {"type": "blank", "level": "Intermediate", "question": "The square of any integer is of the form \\(3m\\) or ______.", "answer": "3m+1", "explanation": "Square never leaves remainder 2 modulo 3."}, {"type": "blank", "level": "Intermediate", "question": "No perfect square is of the form ______.", "answer": "3m+2", "explanation": "Remainder 2 is impossible when divided by 3."}, {"type": "blank", "level": "Intermediate", "question": "If \\(a=3q+2\\), then \\(a^2=3m+\\) ______.", "answer": "1", "explanation": "\\((3q+2)^2\\) gives remainder 1."}, {"type": "blank", "level": "Intermediate", "question": "If \\(a=3q\\), then \\(a^2\\) is of the form ______.", "answer": "3m", "explanation": "It is a multiple of 3."}, {"type": "blank", "level": "Intermediate", "question": "\\((3q+1)^2=9q^2+6q+\\) ______.", "answer": "1", "explanation": "Square expansion."}, {"type": "blank", "level": "Intermediate", "question": "\\((3q+2)^2=9q^2+12q+\\) ______.", "answer": "4", "explanation": "Square expansion."}, {"type": "blank", "level": "Intermediate", "question": "In \\(a^2=3(3q^2+2q)+1\\), \\(m=\\) ______.", "answer": "3q^2+2q", "explanation": "Compare with \\(3m+1\\)."}, {"type": "blank", "level": "Intermediate", "question": "In \\(a^2=3(3q^2+4q+1)+1\\), \\(m=\\) ______.", "answer": "3q^2+4q+1", "explanation": "Compare with \\(3m+1\\)."}, {"type": "blank", "level": "Intermediate", "question": "The identity \\((a+b)^2=\\) ______ is used for square expansion.", "answer": "a^2+2ab+b^2", "explanation": "Standard identity."}, {"type": "blank", "level": "Intermediate", "question": "Positive odd integers with divisor \\(6\\) have forms \\(6q+1,6q+3,\\) ______.", "answer": "6q+5", "explanation": "Odd remainders are 1, 3, 5."}, {"type": "blank", "level": "Intermediate", "question": "When divided by \\(8\\), possible remainders are \\(0,1,2,3,4,5,6,\\) ______.", "answer": "7", "explanation": "Remainders stop at 7."}, {"type": "blank", "level": "Advanced", "question": "The cube of any positive integer is of the form \\(9m,9m+1,\\) or ______.", "answer": "9m+8", "explanation": "Cubes from residues 0,1,2 modulo 3 give 0,1,8 modulo 9."}, {"type": "blank", "level": "Advanced", "question": "If \\(x=3q+2\\), then \\(x^3\\) is of the form ______.", "answer": "9m+8", "explanation": "Cube expansion gives remainder 8."}, {"type": "blank", "level": "Advanced", "question": "If \\(x=3q+1\\), then \\(x^3\\) is of the form ______.", "answer": "9m+1", "explanation": "Cube expansion gives remainder 1."}, {"type": "blank", "level": "Advanced", "question": "If \\(x=3q\\), then \\(x^3\\) is of the form ______.", "answer": "9m", "explanation": "It is divisible by 9."}, {"type": "blank", "level": "Advanced", "question": "\\((3q)^3=\\) ______.", "answer": "27q^3", "explanation": "Cube of product."}, {"type": "blank", "level": "Advanced", "question": "\\((3q+1)^3=27q^3+27q^2+9q+\\) ______.", "answer": "1", "explanation": "Cube expansion."}, {"type": "blank", "level": "Advanced", "question": "\\((3q+2)^3=27q^3+54q^2+36q+\\) ______.", "answer": "8", "explanation": "Cube expansion."}, {"type": "blank", "level": "Advanced", "question": "\\(27q^3=9(\\) ______ \\().\\)", "answer": "3q^3", "explanation": "Factor 9."}, {"type": "blank", "level": "Advanced", "question": "\\(27q^3+27q^2+9q+1=9(\\) ______ \\()+1\\).", "answer": "3q^3+3q^2+q", "explanation": "Take 9 common."}, {"type": "blank", "level": "Advanced", "question": "\\(27q^3+54q^2+36q+8=9(\\) ______ \\()+8\\).", "answer": "3q^3+6q^2+4q", "explanation": "Take 9 common."}, {"type": "blank", "level": "Advanced", "question": "The cube identity is \\((a+b)^3=a^3+3a^2b+3ab^2+\\) ______.", "answer": "b^3", "explanation": "Standard identity."}, {"type": "blank", "level": "Advanced", "question": "When divided by \\(b\\), possible remainders are \\(0,1,2,\\ldots,\\) ______.", "answer": "b-1", "explanation": "Remainders end at divisor minus one."}, {"type": "blank", "level": "Advanced", "question": "For divisor \\(7\\), possible forms are \\(7q,7q+1,\\ldots,\\) ______.", "answer": "7q+6", "explanation": "Last valid remainder is 6."}, {"type": "blank", "level": "Advanced", "question": "The form \\(3q+3\\) is not used because the remainder equals the ______.", "answer": "divisor", "explanation": "Remainder must be less than divisor."}, {"type": "blank", "level": "Advanced", "question": "A perfect square can leave remainder ______ or \\(1\\) when divided by \\(3\\).", "answer": "0", "explanation": "Only 0 or 1 are possible."}, {"type": "blank", "level": "Advanced", "question": "The remainder of \\(2^3\\) in the cube pattern is ______.", "answer": "8", "explanation": "\\(2^3=8\\)."}, {"type": "blank", "level": "Advanced", "question": "The remainder of \\(1^3\\) in the cube pattern is ______.", "answer": "1", "explanation": "\\(1^3=1\\)."}], "match": [{"type": "match", "level": "Basic", "question": "Match the Euclid symbols with meanings.", "pairs": [["\\(a\\)", "Dividend"], ["\\(b\\)", "Divisor"], ["\\(q\\)", "Quotient"], ["\\(r\\)", "Remainder"], ["\\(0\\le r<b\\)", "Condition"]], "explanation": "These are the basic components of Euclid’s Division Lemma."}, {"type": "match", "level": "Basic", "question": "Match the divisor with possible remainders.", "pairs": [["\\(2\\)", "\\(0,1\\)"], ["\\(3\\)", "\\(0,1,2\\)"], ["\\(4\\)", "\\(0,1,2,3\\)"], ["\\(5\\)", "\\(0,1,2,3,4\\)"], ["\\(6\\)", "\\(0,1,2,3,4,5\\)"]], "explanation": "For divisor \\(b\\), remainders are from 0 to \\(b-1\\)."}, {"type": "match", "level": "Basic", "question": "Match forms with type.", "pairs": [["\\(2q\\)", "Even integer"], ["\\(2q+1\\)", "Odd integer"], ["\\(3q\\)", "Multiple of 3"], ["\\(5q+4\\)", "Remainder 4 on division by 5"], ["\\(7q+6\\)", "Remainder 6 on division by 7"]], "explanation": "The added part after \\(bq\\) is the remainder."}, {"type": "match", "level": "Basic", "question": "Match number with form modulo \\(4\\).", "pairs": [["\\(12\\)", "\\(4q\\)"], ["\\(13\\)", "\\(4q+1\\)"], ["\\(14\\)", "\\(4q+2\\)"], ["\\(15\\)", "\\(4q+3\\)"], ["\\(16\\)", "\\(4q\\)"]], "explanation": "Divide each number by 4 and observe the remainder."}, {"type": "match", "level": "Basic", "question": "Match number with form modulo \\(3\\).", "pairs": [["\\(9\\)", "\\(3q\\)"], ["\\(10\\)", "\\(3q+1\\)"], ["\\(11\\)", "\\(3q+2\\)"], ["\\(12\\)", "\\(3q\\)"], ["\\(14\\)", "\\(3q+2\\)"]], "explanation": "Divide each number by 3."}, {"type": "match", "level": "Basic", "question": "Match statement with correct word.", "pairs": [["Leftover after division", "Remainder"], ["Number being divided", "Dividend"], ["Number by which division is done", "Divisor"], ["Number of complete groups", "Quotient"], ["Always less than divisor", "Remainder"]], "explanation": "These are division vocabulary terms."}, {"type": "match", "level": "Basic", "question": "Match forms for divisor \\(5\\).", "pairs": [["\\(5q\\)", "Remainder 0"], ["\\(5q+1\\)", "Remainder 1"], ["\\(5q+2\\)", "Remainder 2"], ["\\(5q+3\\)", "Remainder 3"], ["\\(5q+4\\)", "Remainder 4"]], "explanation": "The constant term gives the remainder."}, {"type": "match", "level": "Basic", "question": "Match invalid remainder with reason.", "pairs": [["Remainder \\(2\\) for divisor \\(2\\)", "Not less than divisor"], ["Remainder \\(3\\) for divisor \\(3\\)", "Not less than divisor"], ["Remainder \\(4\\) for divisor \\(4\\)", "Not less than divisor"], ["Remainder \\(5\\) for divisor \\(5\\)", "Not less than divisor"], ["Remainder \\(0\\)", "Valid remainder"]], "explanation": "A remainder must be less than the divisor."}, {"type": "match", "level": "Basic", "question": "Match examples with quotient-remainder form.", "pairs": [["\\(17\\) divided by \\(5\\)", "\\(5\\cdot3+2\\)"], ["\\(23\\) divided by \\(3\\)", "\\(3\\cdot7+2\\)"], ["\\(31\\) divided by \\(4\\)", "\\(4\\cdot7+3\\)"], ["\\(28\\) divided by \\(4\\)", "\\(4\\cdot7+0\\)"], ["\\(36\\) divided by \\(5\\)", "\\(5\\cdot7+1\\)"]], "explanation": "Write number as divisor times quotient plus remainder."}, {"type": "match", "level": "Basic", "question": "Match divisor with last form.", "pairs": [["\\(2\\)", "\\(2q+1\\)"], ["\\(3\\)", "\\(3q+2\\)"], ["\\(4\\)", "\\(4q+3\\)"], ["\\(5\\)", "\\(5q+4\\)"], ["\\(8\\)", "\\(8q+7\\)"]], "explanation": "The last form uses remainder \\(b-1\\)."}, {"type": "match", "level": "Basic", "question": "Match form with parity.", "pairs": [["\\(4q\\)", "Even"], ["\\(4q+1\\)", "Odd"], ["\\(4q+2\\)", "Even"], ["\\(4q+3\\)", "Odd"], ["\\(6q+5\\)", "Odd"]], "explanation": "Even base plus even/odd remainder determines parity."}, {"type": "match", "level": "Basic", "question": "Match simple conclusion.", "pairs": [["Divisor \\(2\\)", "Even/odd classification"], ["Divisor \\(3\\)", "Three possible forms"], ["Divisor \\(4\\)", "Four possible forms"], ["Remainder \\(0\\)", "Exact division"], ["Remainder \\(1\\) with divisor \\(2\\)", "Odd number"]], "explanation": "This tests the basic logic of remainders."}, {"type": "match", "level": "Basic", "question": "Match number with even/odd form.", "pairs": [["\\(18\\)", "\\(2q\\)"], ["\\(19\\)", "\\(2q+1\\)"], ["\\(24\\)", "\\(2q\\)"], ["\\(35\\)", "\\(2q+1\\)"], ["\\(100\\)", "\\(2q\\)"]], "explanation": "Even numbers are \\(2q\\), odd numbers are \\(2q+1\\)."}, {"type": "match", "level": "Basic", "question": "Match expressions with divisor.", "pairs": [["\\(9q+8\\)", "\\(9\\)"], ["\\(11q+10\\)", "\\(11\\)"], ["\\(6q+5\\)", "\\(6\\)"], ["\\(4q+3\\)", "\\(4\\)"], ["\\(3q+2\\)", "\\(3\\)"]], "explanation": "Coefficient of \\(q\\) is the divisor."}, {"type": "match", "level": "Basic", "question": "Match important notation.", "pairs": [["\\(\\le\\)", "Less than or equal to"], ["\\(<\\)", "Less than"], ["\\(\\times\\)", "Multiplication"], ["\\(\\ldots\\)", "Continues"], ["\\(\\quad\\)", "Space in mathematical writing"]], "explanation": "These symbols occur in textbook mathematics."}, {"type": "match", "level": "Basic", "question": "Match forms with examples.", "pairs": [["\\(3q\\)", "\\(15\\)"], ["\\(3q+1\\)", "\\(16\\)"], ["\\(3q+2\\)", "\\(17\\)"], ["\\(4q+1\\)", "\\(21\\)"], ["\\(4q+3\\)", "\\(23\\)"]], "explanation": "Substitute suitable integer values of \\(q\\)."}, {"type": "match", "level": "Intermediate", "question": "Match odd integer forms under divisor \\(4\\).", "pairs": [["\\(4q\\)", "Even, rejected"], ["\\(4q+1\\)", "Odd, accepted"], ["\\(4q+2\\)", "Even, rejected"], ["\\(4q+3\\)", "Odd, accepted"], ["\\(4q+2=2(2q+1)\\)", "Reason for even"]], "explanation": "Odd integers cannot have even forms."}, {"type": "match", "level": "Intermediate", "question": "Match square results.", "pairs": [["\\((2m)^2\\)", "\\(4m^2\\)"], ["\\((2m+1)^2\\)", "\\(4m^2+4m+1\\)"], ["\\(4m^2+4m+1\\)", "\\(4(m^2+m)+1\\)"], ["Even square", "Divisible by \\(4\\)"], ["Odd square", "\\(4q+1\\)"]], "explanation": "These are the key square expansions."}, {"type": "match", "level": "Intermediate", "question": "Match modulo \\(3\\) cases for square.", "pairs": [["\\(a=3q\\)", "\\(a^2=3m\\)"], ["\\(a=3q+1\\)", "\\(a^2=3m+1\\)"], ["\\(a=3q+2\\)", "\\(a^2=3m+1\\)"], ["\\(3m+2\\)", "Impossible square form"], ["\\(r=0,1,2\\)", "Possible remainders"]], "explanation": "Squaring each case gives only \\(3m\\) or \\(3m+1\\)."}, {"type": "match", "level": "Intermediate", "question": "Match expansion with result.", "pairs": [["\\((3q)^2\\)", "\\(9q^2\\)"], ["\\((3q+1)^2\\)", "\\(9q^2+6q+1\\)"], ["\\((3q+2)^2\\)", "\\(9q^2+12q+4\\)"], ["\\(9q^2+6q+1\\)", "\\(3(3q^2+2q)+1\\)"], ["\\(9q^2+12q+4\\)", "\\(3(3q^2+4q+1)+1\\)"]], "explanation": "Use square identity and factor 3."}, {"type": "match", "level": "Intermediate", "question": "Match \\(m\\) substitutions.", "pairs": [["\\(9q^2\\)", "\\(m=3q^2\\)"], ["\\(3(3q^2+2q)+1\\)", "\\(m=3q^2+2q\\)"], ["\\(3(3q^2+4q+1)+1\\)", "\\(m=3q^2+4q+1\\)"], ["\\(4(m^2+m)+1\\)", "\\(q=m^2+m\\)"], ["\\(4m^2\\)", "\\(q=m^2\\)"]], "explanation": "A new integer letter is used after factoring."}, {"type": "match", "level": "Intermediate", "question": "Match divisor with use in proof.", "pairs": [["\\(2\\)", "Even/odd proof"], ["\\(3\\)", "Square as \\(3m\\) or \\(3m+1\\)"], ["\\(4\\)", "Odd as \\(4q+1\\) or \\(4q+3\\)"], ["\\(6\\)", "Odd as \\(6q+1,6q+3,6q+5\\)"], ["\\(5\\)", "Five possible integer forms"]], "explanation": "The target form tells us the divisor."}, {"type": "match", "level": "Intermediate", "question": "Match statement with correction.", "pairs": [["\\(r=b\\)", "Wrong; \\(r<b\\)"], ["\\(1,2,3,4\\) for divisor 4", "Wrong; include 0 and exclude 4"], ["\\(a=bq+r\\) only", "Incomplete; add \\(0\\le r<b\\)"], ["\\(3q+3\\) as divisor 3 form", "Wrong; it is \\(3(q+1)\\)"], ["\\(q,m\\) same always", "Wrong; they can be different integers"]], "explanation": "These are common mistakes."}, {"type": "match", "level": "Intermediate", "question": "Match odd forms with divisor \\(6\\).", "pairs": [["\\(6q\\)", "Even"], ["\\(6q+1\\)", "Odd"], ["\\(6q+2\\)", "Even"], ["\\(6q+3\\)", "Odd"], ["\\(6q+5\\)", "Odd"]], "explanation": "Parity follows from the remainder added to \\(6q\\)."}, {"type": "match", "level": "Intermediate", "question": "Match number with square form modulo \\(3\\).", "pairs": [["\\(4^2=16\\)", "\\(3m+1\\)"], ["\\(5^2=25\\)", "\\(3m+1\\)"], ["\\(6^2=36\\)", "\\(3m\\)"], ["\\(7^2=49\\)", "\\(3m+1\\)"], ["\\(9^2=81\\)", "\\(3m\\)"]], "explanation": "Squares of multiples of 3 give \\(3m\\), others give \\(3m+1\\)."}, {"type": "match", "level": "Intermediate", "question": "Match odd square examples.", "pairs": [["\\(3^2=9\\)", "\\(4(2)+1\\)"], ["\\(5^2=25\\)", "\\(4(6)+1\\)"], ["\\(7^2=49\\)", "\\(4(12)+1\\)"], ["\\(9^2=81\\)", "\\(4(20)+1\\)"], ["\\(11^2=121\\)", "\\(4(30)+1\\)"]], "explanation": "Odd squares leave remainder 1 when divided by 4."}, {"type": "match", "level": "Intermediate", "question": "Match identity component.", "pairs": [["\\((a+b)^2\\)", "\\(a^2+2ab+b^2\\)"], ["\\(a=3q+2\\)", "Square gives \\(3m+1\\)"], ["\\(a=2m+1\\)", "Odd number"], ["\\(a=2m\\)", "Even number"], ["\\(4q+2\\)", "Even form"]], "explanation": "Important algebra and forms."}, {"type": "match", "level": "Intermediate", "question": "Match proof step with purpose.", "pairs": [["Choose divisor", "Based on final form"], ["List remainders", "Use \\(0\\le r<b\\)"], ["Make cases", "Cover all possibilities"], ["Square/cube", "According to question"], ["Conclude", "State final forms"]], "explanation": "This is the proof flow."}, {"type": "match", "level": "Intermediate", "question": "Match result with impossible form.", "pairs": [["Square modulo 3", "Not \\(3m+2\\)"], ["Odd integer modulo 4", "Not \\(4q\\) or \\(4q+2\\)"], ["Remainder condition", "Not \\(r=b\\)"], ["Divisor 5 forms", "Not \\(5q+5\\)"], ["Even integer", "Not \\(2q+1\\)"]], "explanation": "Each result excludes invalid forms."}, {"type": "match", "level": "Intermediate", "question": "Match indirect reasoning.", "pairs": [["If square is \\(3m+2\\)", "Contradiction"], ["If odd number is \\(4q+2\\)", "Contradiction"], ["If remainder is divisor", "Invalid Euclidean division"], ["If \\(q\\) is integer", "\\(q^2+q\\) integer"], ["If divisor is 3", "Use remainders 0,1,2"]], "explanation": "RD Sharma-style questions often use indirect conclusions."}, {"type": "match", "level": "Intermediate", "question": "Match the critical conclusion.", "pairs": [["\\(a^2=3m\\) or \\(3m+1\\)", "No square is \\(3m+2\\)"], ["\\(x^2=4q+1\\) for odd \\(x\\)", "Odd square leaves remainder 1"], ["\\(x^2=4q\\) for even \\(x\\)", "Even square divisible by 4"], ["\\(a=4q+1\\) or \\(4q+3\\)", "Odd integer modulo 4"], ["\\(a=6q+1,6q+3,6q+5\\)", "Odd integer modulo 6"]], "explanation": "These are useful final takeaways."}, {"type": "match", "level": "Intermediate", "question": "Match expression with factored form.", "pairs": [["\\(4q+2\\)", "\\(2(2q+1)\\)"], ["\\(9q^2\\)", "\\(3(3q^2)\\)"], ["\\(4m^2+4m+1\\)", "\\(4(m^2+m)+1\\)"], ["\\(9q^2+6q+1\\)", "\\(3(3q^2+2q)+1\\)"], ["\\(9q^2+12q+4\\)", "\\(3(3q^2+4q+1)+1\\)"]], "explanation": "Factoring reveals the final required form."}, {"type": "match", "level": "Intermediate", "question": "Match level to skill.", "pairs": [["Basic", "Identify form from remainder"], ["Intermediate", "Use parity and square identities"], ["Advanced", "Use indirect conclusion and cube identity"], ["Exam writing", "State lemma and cases"], ["Revision", "Remember final forms"]], "explanation": "This organizes preparation."}, {"type": "match", "level": "Advanced", "question": "Match cube cases.", "pairs": [["\\(x=3q\\)", "\\(x^3=9m\\)"], ["\\(x=3q+1\\)", "\\(x^3=9m+1\\)"], ["\\(x=3q+2\\)", "\\(x^3=9m+8\\)"], ["\\(0^3\\)", "Remainder \\(0\\)"], ["\\(2^3\\)", "Remainder \\(8\\)"]], "explanation": "Cubing the three residue classes gives the cube forms."}, {"type": "match", "level": "Advanced", "question": "Match cube expansion.", "pairs": [["\\((3q)^3\\)", "\\(27q^3\\)"], ["\\((3q+1)^3\\)", "\\(27q^3+27q^2+9q+1\\)"], ["\\((3q+2)^3\\)", "\\(27q^3+54q^2+36q+8\\)"], ["\\(27q^3\\)", "\\(9(3q^3)\\)"], ["\\(27q^3+54q^2+36q+8\\)", "\\(9(3q^3+6q^2+4q)+8\\)"]], "explanation": "Use the cube identity and factor 9."}, {"type": "match", "level": "Advanced", "question": "Match cube form examples.", "pairs": [["\\(2^3=8\\)", "\\(9m+8\\)"], ["\\(4^3=64\\)", "\\(9m+1\\)"], ["\\(6^3=216\\)", "\\(9m\\)"], ["\\(8^3=512\\)", "\\(9m+8\\)"], ["\\(10^3=1000\\)", "\\(9m+1\\)"]], "explanation": "Check the remainder after division by 9."}, {"type": "match", "level": "Advanced", "question": "Match \\(m\\) in cube cases.", "pairs": [["\\(27q^3\\)", "\\(m=3q^3\\)"], ["\\(9(3q^3+3q^2+q)+1\\)", "\\(m=3q^3+3q^2+q\\)"], ["\\(9(3q^3+6q^2+4q)+8\\)", "\\(m=3q^3+6q^2+4q\\)"], ["\\(9m+1\\)", "Remainder 1"], ["\\(9m+8\\)", "Remainder 8"]], "explanation": "The bracketed integer expression becomes \\(m\\)."}, {"type": "match", "level": "Advanced", "question": "Match theorem result with application.", "pairs": [["Euclid’s Lemma", "Write integer as \\(bq+r\\)"], ["Square form modulo \\(3\\)", "Reject \\(3m+2\\) perfect squares"], ["Odd square form", "Remainder \\(1\\) on division by \\(4\\)"], ["Cube form", "\\(9m,9m+1,9m+8\\)"], ["Odd modulo \\(4\\)", "\\(4q+1\\) or \\(4q+3\\)"]], "explanation": "These are common indirect applications."}, {"type": "match", "level": "Advanced", "question": "Match advanced false statement with reason.", "pairs": [["Every square is \\(3m+2\\)", "False; impossible remainder"], ["Every cube is \\(9m+3\\)", "False; not in cube forms"], ["Remainder can equal divisor", "False; must be less"], ["All \\(4q+1\\) are prime", "False; form does not ensure prime"], ["All odd numbers are \\(4q+1\\)", "False; some are \\(4q+3\\)"]], "explanation": "Critical thinking requires rejecting overgeneralization."}, {"type": "match", "level": "Advanced", "question": "Match remainder powers.", "pairs": [["\\(0^2\\) mod \\(3\\)", "\\(0\\)"], ["\\(1^2\\) mod \\(3\\)", "\\(1\\)"], ["\\(2^2\\) mod \\(3\\)", "\\(1\\)"], ["\\(0^3\\) pattern", "\\(0\\)"], ["\\(2^3\\) pattern", "\\(8\\)"]], "explanation": "Remainder powers explain square and cube forms."}, {"type": "match", "level": "Advanced", "question": "Match proof word with meaning.", "pairs": [["Let", "Assume an arbitrary integer"], ["Since", "Give reason"], ["Therefore", "Draw conclusion"], ["Hence proved", "End of proof"], ["Case", "One possible remainder"]], "explanation": "These words help in board-exam proof writing."}, {"type": "match", "level": "Advanced", "question": "Match final answer contains with divisor choice.", "pairs": [["\\(2q,2q+1\\)", "Use \\(2\\)"], ["\\(3q,3q+1,3q+2\\)", "Use \\(3\\)"], ["\\(4q+1,4q+3\\)", "Use \\(4\\)"], ["\\(3m,3m+1\\)", "Use \\(3\\) then square"], ["\\(9m,9m+1,9m+8\\)", "Use \\(3\\) then cube"]], "explanation": "The target expression guides divisor selection."}, {"type": "match", "level": "Advanced", "question": "Match advanced conclusion with example.", "pairs": [["No square is \\(3m+2\\)", "\\(14\\) is not a perfect square"], ["Odd square \\(4q+1\\)", "\\(49=4(12)+1\\)"], ["Even square \\(4q\\)", "\\(36=4(9)\\)"], ["Cube \\(9m+1\\)", "\\(64=9(7)+1\\)"], ["Cube \\(9m+8\\)", "\\(8=9(0)+8\\)"]], "explanation": "Examples support the general result."}, {"type": "match", "level": "Advanced", "question": "Match expression with textbook symbol idea.", "pairs": [["\\(\\in\\mathbb Z\\)", "Belongs to integers"], ["\\(\\forall\\)", "For all"], ["\\(\\therefore\\)", "Therefore"], ["\\(\\because\\)", "Because"], ["\\(\\not=\\)", "Not equal to"]], "explanation": "These symbols are common in mathematical presentation."}, {"type": "match", "level": "Advanced", "question": "Match indirect question type.", "pairs": [["Can \\(125\\) be \\(9m+8\\)?", "Yes, \\(125=9(13)+8\\)"], ["Can \\(20\\) be a perfect square if \\(20=3m+2\\)?", "No"], ["Can an odd integer be \\(4q+2\\)?", "No"], ["Can \\(5q+5\\) be a final remainder form?", "No"], ["Can \\(81\\) be \\(3m\\)?", "Yes"]], "explanation": "These questions test hidden form recognition."}, {"type": "match", "level": "Advanced", "question": "Match algebraic identity with use.", "pairs": [["\\((a+b)^2\\)", "Square cases"], ["\\((a+b)^3\\)", "Cube cases"], ["\\(4q+2=2(2q+1)\\)", "Prove even"], ["\\(4(m^2+m)+1\\)", "Odd square form"], ["\\(9(3q^3+6q^2+4q)+8\\)", "Cube \\(9m+8\\)"]], "explanation": "Correct identity makes the proof valid."}, {"type": "match", "level": "Advanced", "question": "Match RD-style thinking step.", "pairs": [["Observe required form", "Choose divisor"], ["Check all residues", "Avoid missing cases"], ["Factor common number", "Create final form"], ["Rename bracket as \\(m\\)", "Show integer form"], ["Conclude impossible form", "Use contradiction"]], "explanation": "This is the problem-solving strategy."}, {"type": "match", "level": "Advanced", "question": "Match challenge conclusion.", "pairs": [["\\(a^2\\) cannot be \\(3m+2\\)", "Square residue result"], ["\\(a^3\\) may be \\(9m+8\\)", "Cube residue result"], ["\\(a\\) odd cannot be \\(4q\\)", "Parity result"], ["\\(r\\neq b\\)", "Remainder condition"], ["\\(b\\) possible remainders", "\\(0\\) to \\(b-1\\)"]], "explanation": "Each conclusion follows from Euclid’s division lemma."}, {"type": "match", "level": "Advanced", "question": "Match final revision idea.", "pairs": [["Remainder decides", "Number form"], ["Odd number", "\\(2q+1\\)"], ["Odd square", "\\(4q+1\\)"], ["Any square modulo 3", "\\(3m\\) or \\(3m+1\\)"], ["Any cube pattern", "\\(9m,9m+1,9m+8\\)"]], "explanation": "These are the final memory points."}, {"type": "match", "level": "Advanced", "question": "Match proof flaw with correction.", "pairs": [["Used \\(r=1,2,3\\) for divisor 3", "Use \\(r=0,1,2\\)"], ["Ignored \\(r=2\\) case", "Check all cases"], ["Called \\(4q+2\\) odd", "It is even"], ["Wrote \\((a+b)^2=a^2+b^2\\)", "Add \\(2ab\\) term"], ["Wrote \\((a+b)^3=a^3+b^3\\)", "Use full cube identity"]], "explanation": "These flaws often reduce marks."}]};
+let state = JSON.parse(localStorage.getItem('euclid150StateV2') || '{}');
+const letters = ['A','B','C','D','E'];
+
+function allQuestions(){
+  const arr=[];
+  DATA.mcq.forEach((q,i)=>arr.push({...q, id:'M'+(i+1), number:i+1, type:'mcq'}));
+  DATA.blank.forEach((q,i)=>arr.push({...q, id:'F'+(i+1), number:50+i+1, type:'blank'}));
+  DATA.match.forEach((q,i)=>arr.push({...q, id:'T'+(i+1), number:100+i+1, type:'match'}));
+  return arr;
+}
+
+function norm(s){
+  return String(s||'').toLowerCase().replace(/\\\(|\\\)|\\|\s|\{|\}|\$/g,'').replace(/−/g,'-');
+}
+
+function save(){
+  localStorage.setItem('euclid150StateV2', JSON.stringify(state));
+  updateScore();
+}
+
+function updateScore(){
+  const qs = allQuestions();
+  let attempted=0, correct=0;
+  qs.forEach(q=>{
+    if(state[q.id]?.attempted) attempted++;
+    if(state[q.id]?.correct) correct++;
+  });
+  const pct = Math.round((attempted/qs.length)*100);
+  document.getElementById('progressBar').style.width = pct+'%';
+  document.getElementById('scoreText').textContent = `Score: ${correct} / ${qs.length} • Attempted: ${attempted}`;
+}
+
+function filteredQuestions(){
+  const t=document.getElementById('typeFilter')?.value || 'all';
+  const l=document.getElementById('levelFilter')?.value || 'all';
+  const s=(document.getElementById('searchBox')?.value || '').toLowerCase();
+  return allQuestions().filter(q => (t==='all'||q.type===t) && (l==='all'||q.level===l) && (!s || (q.question+' '+(q.explanation||'')).toLowerCase().includes(s)));
+}
+
+function render(){
+  const quiz=document.getElementById('quiz');
+  const qs=filteredQuestions();
+  quiz.innerHTML = qs.map(q => renderQuestion(q)).join('');
+  updateScore();
+  if(window.MathJax) MathJax.typesetPromise();
+}
+
+function renderQuestion(q){
+  const typ = q.type==='mcq'?'MCQ':q.type==='blank'?'Fill in the Blank':'Match the Following';
+  let body='';
+  if(q.type==='mcq') body = renderMCQ(q);
+  if(q.type==='blank') body = renderBlank(q);
+  if(q.type==='match') body = renderMatch(q);
+  return `<article class="card" id="${q.id}">
+    <div class="card-head">
+      <div><div class="qno">Question ${q.number} • ${q.id}</div><div class="question">${q.question}</div></div>
+      <div><span class="level ${q.level}">${q.level}</span> <span class="type">${typ}</span></div>
+    </div>
+    ${body}
+    <div class="feedback" id="fb-${q.id}"></div>
+  </article>`;
+}
+
+function renderMCQ(q){
+  return `<div class="options">` + q.options.map((op,idx)=>`
+    <div class="option" onclick="answerMCQ('${q.id}',${idx})">
+      <strong>${String.fromCharCode(65+idx)}.</strong> <span>${op}</span>
+    </div>`).join('') + `</div>
+    <button class="btn secondary" style="margin-top:12px" onclick="reveal('${q.id}')">Show Answer</button>`;
+}
+
+function renderBlank(q){
+  const prev = state[q.id]?.value || '';
+  return `<div class="blank-row">
+      <input class="blank-input" id="in-${q.id}" value="${prev}" placeholder="Type your answer here e.g., 2q+1" />
+      <button class="btn" onclick="answerBlank('${q.id}')">Check Answer</button>
+      <button class="btn secondary" onclick="reveal('${q.id}')">Show Answer</button>
+    </div>`;
+}
+
+function getMatchOptions(q){
+  return q.pairs.map(p=>p[1]).sort((a,b)=>a.localeCompare(b));
+}
+
+function renderMatch(q){
+  const options = getMatchOptions(q);
+  let rows = q.pairs.map((p,idx)=>{
+    const prev = state[q.id]?.matches?.[idx] || '';
+    return `<tr><td>${letters[idx]}. ${p[0]}</td><td>
+      <select id="sel-${q.id}-${idx}">
+        <option value="">Choose match</option>
+        ${options.map(o=>`<option value="${escapeAttr(o)}" ${prev===o?'selected':''}>${o}</option>`).join('')}
+      </select>
+    </td></tr>`;
+  }).join('');
+  return `<table class="match-table">${rows}</table>
+    <button class="btn" onclick="answerMatch('${q.id}')">Check Matching</button>
+    <button class="btn secondary" onclick="reveal('${q.id}')">Show Answer</button>`;
+}
+
+function escapeAttr(s){ return String(s).replace(/"/g,'&quot;'); }
+function findQ(id){ return allQuestions().find(q=>q.id===id); }
+
+function answerMCQ(id,idx){
+  const q=findQ(id);
+  const correct = idx===q.answer;
+  state[id]={attempted:true, correct, value:idx};
+  save();
+  const card=document.getElementById(id);
+  [...card.querySelectorAll('.option')].forEach((el,i)=>{
+    el.classList.remove('selected','correct','wrong');
+    if(i===idx) el.classList.add('selected');
+    if(i===q.answer) el.classList.add('correct');
+    else if(i===idx && !correct) el.classList.add('wrong');
+  });
+  showFeedback(q, correct);
+}
+
+function answerBlank(id){
+  const q=findQ(id);
+  const val=document.getElementById('in-'+id).value;
+  const correct = norm(val)===norm(q.answer);
+  state[id]={attempted:true, correct, value:val};
+  save();
+  showFeedback(q, correct);
+}
+
+function answerMatch(id){
+  const q=findQ(id);
+  let correctCount=0, selected=[];
+  q.pairs.forEach((p,idx)=>{
+    const val=document.getElementById(`sel-${id}-${idx}`).value;
+    selected.push(val);
+    if(val===p[1]) correctCount++;
+  });
+  const correct = correctCount===q.pairs.length;
+  state[id]={attempted:true, correct, matches:selected, correctCount};
+  save();
+  showFeedback(q, correct, `You matched ${correctCount} / ${q.pairs.length} correctly.`);
+}
+
+function showFeedback(q, correct, extra=''){
+  const fb=document.getElementById('fb-'+q.id);
+  fb.className='feedback show '+(correct?'ok':'bad');
+  fb.innerHTML = `<strong>${correct?'Correct ✅':'Check again ❌'}</strong> ${extra}
+    <div class="solution"><strong>Answer:</strong> ${answerText(q)}<br><strong>Reason:</strong> ${q.explanation}</div>`;
+  if(window.MathJax) MathJax.typesetPromise([fb]);
+}
+
+function reveal(id){
+  const q=findQ(id);
+  state[id] = state[id] || {};
+  state[id].attempted = state[id].attempted || false;
+  save();
+  const fb=document.getElementById('fb-'+id);
+  fb.className='feedback show ok';
+  fb.innerHTML = `<strong>Answer shown 👇</strong>
+    <div class="solution"><strong>Answer:</strong> ${answerText(q)}<br><strong>Reason:</strong> ${q.explanation}</div>`;
+  if(q.type==='mcq'){
+    const card=document.getElementById(id);
+    [...card.querySelectorAll('.option')].forEach((el,i)=>{
+      if(i===q.answer) el.classList.add('correct');
+    });
+  }
+  if(window.MathJax) MathJax.typesetPromise([fb]);
+}
+
+function answerText(q){
+  if(q.type==='mcq') return `${String.fromCharCode(65+q.answer)}. ${q.options[q.answer]}`;
+  if(q.type==='blank') return q.answer;
+  if(q.type==='match') return q.pairs.map((p,i)=>`${letters[i]} → ${p[1]}`).join('; ');
+}
+
+function showAll(){
+  filteredQuestions().forEach(q=>setTimeout(()=>reveal(q.id),0));
+}
+
+function hideAll(){
+  document.querySelectorAll('.feedback').forEach(x=>{x.className='feedback';x.innerHTML='';});
+  document.querySelectorAll('.option').forEach(x=>x.classList.remove('correct','wrong','selected'));
+}
+
+function buildAnswerKey(){
+  return allQuestions().map(q=>`Q${q.number} [${q.level} | ${q.type.toUpperCase()}] ${stripMath(q.question)}\nAnswer: ${stripMath(answerText(q))}\nReason: ${stripMath(q.explanation)}\n`).join('\n');
+}
+
+function stripMath(s){
+  return String(s).replace(/\\\(|\\\)|\\\[|\\\]/g,'').replace(/\\quad/g,' ').replace(/\\text\{([^}]+)\}/g,'$1').replace(/\\times/g,'×').replace(/\\le/g,'≤').replace(/\\ldots/g,'…').replace(/\\cdot/g,'·').replace(/\\/g,'');
+}
+
+function finishTest(){
+  const qs=allQuestions();
+  let correct=0, attempted=0;
+  let byLevel={Basic:[0,0],Intermediate:[0,0],Advanced:[0,0]};
+  let byType={mcq:[0,0],blank:[0,0],match:[0,0]};
+  qs.forEach(q=>{
+    if(state[q.id]?.attempted) {
+      attempted++;
+      byLevel[q.level][1]++; byType[q.type][1]++;
+    }
+    if(state[q.id]?.correct) {
+      correct++;
+      byLevel[q.level][0]++; byType[q.type][0]++;
+    }
+  });
+  const pct = Math.round(correct/qs.length*100);
+  let title = pct>=90 ? '🏆 Topper Level Achieved!' : pct>=75 ? '🌟 Strong RD Sharma Practice Level!' : pct>=50 ? '👍 Good Progress — Revise Mistakes!' : '📘 Start Again with Basic Remainders!';
+  document.getElementById('rewardTitle').textContent = title;
+  document.getElementById('rewardMsg').textContent = `You scored ${correct} out of ${qs.length}. Attempted ${attempted} questions. Accuracy on total paper: ${pct}%.`;
+  const pills=[];
+  Object.entries(byLevel).forEach(([k,v])=>pills.push(`<span class="pill">${k}: ${v[0]}/${v[1]} correct</span>`));
+  Object.entries(byType).forEach(([k,v])=>pills.push(`<span class="pill">${k.toUpperCase()}: ${v[0]}/${v[1]} correct</span>`));
+  document.getElementById('reportPills').innerHTML=pills.join('');
+  const key=buildAnswerKey();
+  const ak=document.getElementById('answerKey');
+  ak.style.display='block';
+  ak.textContent=key;
+  document.getElementById('report').scrollIntoView({behavior:'smooth'});
+}
+
+function downloadPDF(){
+  finishTest();
+  const { jsPDF } = window.jspdf || {};
+  if(!jsPDF){
+    alert('PDF library is still loading. Please try again in a few seconds, or use Print > Save as PDF.');
+    return;
+  }
+  const doc = new jsPDF({orientation:'p', unit:'pt', format:'a4'});
+  const margin=36, pageW=595.28, pageH=841.89;
+  let y=44;
+  doc.setFont('helvetica','bold'); doc.setFontSize(16);
+  doc.text('Euclid’s Division Lemma - 150 Question Answer Sheet', margin, y);
+  y+=22;
+  doc.setFont('helvetica','normal'); doc.setFontSize(10);
+  doc.text('MCQs • Fill in the Blanks • Match the Following | Basic • Intermediate • Advanced', margin, y);
+  y+=24;
+  const text = buildAnswerKey();
+  const lines = doc.splitTextToSize(text, pageW - 2*margin);
+  lines.forEach(line=>{
+    if(y>pageH-margin){ doc.addPage(); y=margin; }
+    doc.text(line, margin, y);
+    y+=13;
+  });
+  doc.save('euclid_150_answer_sheet.pdf');
+}
+
+render();
+</script>
+</body>
+</html>

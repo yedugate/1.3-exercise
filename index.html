@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Euclid’s Division Lemma – Applications | Class 10 CBSE</title>
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']], processEscapes: true },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+<style>
+:root{
+  --navy:#0f2f70; --blue:#2563eb; --cyan:#06b6d4; --purple:#7c3aed; --green:#16a34a; --orange:#f59e0b;
+  --ink:#172033; --muted:#64748b; --line:#d8e4f6; --soft:#f7fbff; --paper:#ffffff;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{margin:0;font-family:"Segoe UI",Arial,sans-serif;color:var(--ink);background:radial-gradient(circle at top left,#dff7ff 0,transparent 28%),radial-gradient(circle at top right,#f2e8ff 0,transparent 28%),linear-gradient(180deg,#f8fbff 0%,#eef7ff 100%);line-height:1.72;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;background-image:linear-gradient(90deg,rgba(37,99,235,.045) 1px,transparent 1px),linear-gradient(180deg,rgba(37,99,235,.035) 1px,transparent 1px);background-size:30px 30px;z-index:-1}
+.page{max-width:1360px;margin:0 auto;padding:22px 24px 22px 350px}
+.hero{border-radius:30px;padding:36px 34px;background:linear-gradient(135deg,#0f3a8a 0%,#2563eb 52%,#06b6d4 100%);color:#fff;box-shadow:0 18px 48px rgba(37,99,235,.25);position:relative;overflow:hidden;margin-bottom:18px}
+.hero:after{content:"a = bq + r  •  0 ≤ r < b";position:absolute;right:24px;top:14px;font-size:34px;font-weight:900;opacity:.14;white-space:nowrap}
+.eyebrow{display:inline-block;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:7px 13px;font-weight:800;font-size:.9rem}
+.hero h1{font-size:clamp(2rem,4.6vw,3.8rem);line-height:1;margin:18px 0 8px;letter-spacing:-1.2px;color:#fff;border:0;padding:0}
+.hero h2{font-size:clamp(1.05rem,2.2vw,1.6rem);margin:0;color:#dff7ff;border:0;padding:0}
+.hero p{font-size:1.04rem;max-width:850px;color:#eef7ff;margin:16px 0 0}
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
+button,.btn{border:none;border-radius:14px;padding:12px 16px;font-weight:850;cursor:pointer;text-decoration:none;display:inline-block}
+button{background:#fff;color:#123b8a}.btn{background:#111827;color:#fff}
+.side-nav{position:fixed;left:max(18px,calc((100vw - 1360px)/2 + 24px));top:18px;width:300px;height:calc(100vh - 36px);overflow-y:auto;overflow-x:hidden;background:rgba(255,255,255,.95);border:1px solid var(--line);border-radius:24px;box-shadow:0 14px 35px rgba(15,23,42,.10);padding:16px;z-index:20;scrollbar-width:thin}
+.side-nav h3{margin:0 0 8px;color:var(--navy);font-size:1.02rem;display:flex;align-items:center;gap:8px}
+.side-nav h3::before{content:"☰";background:#eaf2ff;color:#2563eb;border-radius:10px;padding:3px 7px;font-size:.9rem}
+.nav-small{color:#64748b;font-size:.82rem;margin:0 0 12px;line-height:1.35}
+.nav-list{display:flex;flex-direction:column;gap:6px}
+.nav-list a{text-decoration:none;color:#26364d;background:#f7faff;border:1px solid #e3edfb;border-radius:13px;padding:9px 10px;font-weight:760;font-size:.88rem;line-height:1.25;display:block}
+.nav-list a.nav-h2{margin-left:12px;font-size:.81rem;background:#fff}
+.nav-list a:hover{background:#e5f1ff;color:#0f3a8a;border-color:#bfdbfe;transform:translateX(2px)}
+.nav-list a.active-topic{background:#dbeafe!important;color:#0f2f70!important;border-color:#60a5fa!important;box-shadow:inset 4px 0 0 #2563eb}
+.quick-cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:0 0 18px}
+.qcard{background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:18px;padding:14px;box-shadow:0 9px 24px rgba(15,23,42,.06);min-width:0;overflow:hidden}
+.qcard b{display:block;color:var(--navy);margin-bottom:4px}
+.content-shell{min-width:0;width:100%}
+.intro{background:rgba(255,255,255,.98);border:1px solid var(--line);border-radius:22px;padding:22px;margin-bottom:20px;box-shadow:0 12px 34px rgba(15,23,42,.06)}
+.lesson-card{background:rgba(255,255,255,.98);border:1px solid var(--line);border-radius:24px;margin:0 0 22px;padding:26px;box-shadow:0 12px 34px rgba(15,23,42,.07);overflow:hidden;break-inside:avoid;scroll-margin-top:22px}
+.section-kicker{font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;color:#0ea5e9;font-weight:900;margin-bottom:6px}
+h1{font-size:1.78rem;line-height:1.18;margin:0 0 16px;color:#123b8a;border-bottom:3px solid #e2eeff;padding-bottom:10px;overflow-wrap:anywhere}
+h2{font-size:1.24rem;color:#7c3aed;margin:24px 0 10px;padding-left:12px;border-left:5px solid #f59e0b;overflow-wrap:anywhere}
+h3{font-size:1.06rem;color:#0f766e;margin:18px 0 6px}
+p{margin:10px 0;overflow-wrap:break-word}strong{color:#123b8a}
+.math-card{background:linear-gradient(90deg,#f0f7ff,#ffffff);border:1px solid #b9d5ff;border-left:7px solid var(--blue);border-radius:16px;padding:12px 14px;margin:12px 0;overflow-x:auto;overflow-y:hidden;max-width:100%;font-size:1.05rem;white-space:normal}
+.clean-list{background:#fbfdff;border:1px solid #e4edf9;border-radius:16px;padding:12px 18px 12px 34px;margin:14px 0}
+.clean-list li{margin:6px 0;padding-left:2px}
+.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:16px;margin:16px 0;background:white;max-width:100%}
+table{border-collapse:collapse;width:100%;min-width:520px}th{background:linear-gradient(135deg,#123b8a,#2563eb);color:#fff;text-align:left;padding:11px}td{border-bottom:1px solid #e9eef7;padding:10px;vertical-align:top}tr:nth-child(even) td{background:#f8fbff}
+.code-box{background:#0f172a;color:#e2e8f0;border-radius:16px;padding:18px;overflow-x:auto;font-size:.94rem}
+.soft-divider{height:1px;background:linear-gradient(90deg,transparent,#d7e4f8,transparent);margin:18px 0}
+.footer{text-align:center;color:#64748b;padding:24px 8px}
+.top-link{position:fixed;right:18px;bottom:18px;background:#123b8a;color:#fff;border-radius:999px;padding:10px 14px;text-decoration:none;font-weight:900;box-shadow:0 10px 24px rgba(15,23,42,.2);z-index:10}
+@media(max-width:1050px){.page{padding:16px 16px 16px 300px}.side-nav{width:260px}.quick-cards{grid-template-columns:repeat(2,minmax(0,1fr))}.lesson-card{padding:22px}}
+@media(max-width:820px){.page{padding:12px}.side-nav{position:sticky;top:8px;width:100%;height:auto;max-height:42vh;left:auto;margin-bottom:16px}.quick-cards{grid-template-columns:repeat(2,minmax(0,1fr))}.hero{padding:28px 22px}}
+@media(max-width:560px){.quick-cards{grid-template-columns:1fr}.lesson-card{padding:18px;border-radius:18px}h1{font-size:1.42rem}.hero h1{font-size:2rem}.top-link{display:none}table{min-width:480px}}
+@media print{body{background:white;font-size:11.5pt;line-height:1.42;color:#111827}body::before{display:none}.page{max-width:none;padding:0}.hero{border-radius:0;box-shadow:none;padding:18px;background:#123b8a!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;margin-bottom:8px}.actions,.side-nav,.top-link{display:none!important}.quick-cards{grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:8px}.qcard,.lesson-card,.intro{box-shadow:none;border:1px solid #ccd8ea;break-inside:avoid;page-break-inside:avoid;border-radius:12px;padding:12px;margin-bottom:10px}h1{font-size:15.5pt}h2{font-size:13pt}h3{font-size:12pt}.math-card{background:#f8fbff!important;border:1px solid #b8c9e8;border-left:4px solid #2563eb;break-inside:avoid;page-break-inside:avoid}@page{size:A4;margin:12mm}}
+</style>
+</head>
+<!-- Questions Page Links Section -->
+<section class="questions-link-section">
+  <h2>Practice Questions</h2>
+  <p>Click below to open the interactive question pages.</p>
+
+  <div class="question-buttons">
+    <a href="questions1.html" class="question-btn">
+      Open Questions 1
+    </a>
+
+    <a href="questions2.html" class="question-btn">
+      Open Questions 2
+    </a>
+  </div>
+</section>
+
+<style>
+  .questions-link-section {
+    margin: 40px auto;
+    padding: 30px;
+    max-width: 900px;
+    text-align: center;
+    background: linear-gradient(135deg, #f0f7ff, #ffffff);
+    border: 2px solid #d6e9ff;
+    border-radius: 22px;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
+    font-family: "Times New Roman", Georgia, serif;
+  }
+
+  .questions-link-section h2 {
+    margin-bottom: 10px;
+    font-size: 30px;
+    color: #123b8a;
+  }
+
+  .questions-link-section p {
+    margin-bottom: 24px;
+    font-size: 18px;
+    color: #334155;
+  }
+
+  .question-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+
+  .question-btn {
+    display: inline-block;
+    padding: 14px 26px;
+    min-width: 210px;
+    background: #123b8a;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 14px;
+    box-shadow: 0 6px 16px rgba(18, 59, 138, 0.25);
+    transition: all 0.25s ease;
+  }
+
+  .question-btn:hover {
+    background: #0f2f6d;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 22px rgba(18, 59, 138, 0.32);
+  }
+
+  .question-btn:active {
+    transform: translateY(0);
+  }
+
+  @media print {
+    .questions-link-section {
+      box-shadow: none;
+      border: 1px solid #999;
+      background: white;
+    }
+
+    .question-btn {
+      background: white;
+      color: #000;
+      border: 1px solid #000;
+      box-shadow: none;
+    }
+  }
+</style>
+<body>
+<aside class="side-nav"><h3>Left Navigation</h3><p class="nav-small">Click any topic to jump. The navigation stays visible while scrolling.</p><div class="nav-list"><a class="" href="#euclid-s-division-lemma-applications">Euclid’s Division Lemma – Applications</a>
+<a class="nav-h2" href="#simple-intermediate-and-advanced-expansion">Simple, Intermediate and Advanced Expansion</a>
+<a class="" href="#1-backend-concept-what-actually-happens">1. Backend Concept: What Actually Happens?</a>
+<a class="" href="#2-frontend-concept-student-friendly-understanding">2. Frontend Concept: Student-Friendly Understanding</a>
+<a class="" href="#level-1-simple-level">Level 1: Simple Level</a>
+<a class="nav-h2" href="#example-1">Example 1</a>
+<a class="nav-h2" href="#show-that-every-positive-even-integer-is-of-the-form-2q-and-every-positive-odd-integer-is-of-the-form-2q-1">Show that every positive even integer is of the form \(2q\), and every positive odd integer is of the form \(2q+1\)</a>
+<a class="nav-h2" href="#student-memory-table">Student Memory Table</a>
+<a class="nav-h2" href="#exam-writing-format">Exam Writing Format</a>
+<a class="" href="#example-2">Example 2</a>
+<a class="nav-h2" href="#show-that-any-positive-integer-is-of-the-form-3q-3q-1-or-3q-2">Show that any positive integer is of the form \(3q\), \(3q+1\), or \(3q+2\)</a>
+<a class="nav-h2" href="#frontend-pattern">Frontend Pattern</a>
+<a class="" href="#level-2-intermediate-level">Level 2: Intermediate Level</a>
+<a class="nav-h2" href="#example-3">Example 3</a>
+<a class="nav-h2" href="#show-that-any-positive-odd-integer-is-of-the-form-4q-1-or-4q-3">Show that any positive odd integer is of the form \(4q+1\) or \(4q+3\)</a>
+<a class="nav-h2" href="#frontend-student-table">Frontend Student Table</a>
+<a class="nav-h2" href="#simple-examples">Simple Examples</a>
+<a class="" href="#example-4">Example 4</a>
+<a class="nav-h2" href="#show-that-the-square-of-an-odd-integer-is-of-the-form-4q-1">Show that the square of an odd integer is of the form \(4q+1\)</a>
+<a class="nav-h2" href="#frontend-explanation">Frontend Explanation</a>
+<a class="nav-h2" href="#important-exam-point">Important Exam Point</a>
+<a class="" href="#level-3-advanced-level">Level 3: Advanced Level</a>
+<a class="nav-h2" href="#example-5">Example 5</a>
+<a class="nav-h2" href="#show-that-the-square-of-any-positive-integer-is-of-the-form-3m-or-3m-1">Show that the square of any positive integer is of the form \(3m\) or \(3m+1\)</a>
+<a class="nav-h2" href="#case-1-a-3q">Case 1: \(a = 3q\)</a>
+<a class="nav-h2" href="#case-2-a-3q-1">Case 2: \(a = 3q+1\)</a>
+<a class="nav-h2" href="#case-3-a-3q-2">Case 3: \(a = 3q+2\)</a>
+<a class="nav-h2" href="#final-conclusion-5">Final Conclusion</a>
+<a class="nav-h2" href="#frontend-shortcut-understanding">Frontend Shortcut Understanding</a>
+<a class="nav-h2" href="#example-table">Example Table</a>
+<a class="" href="#example-6">Example 6</a>
+<a class="nav-h2" href="#use-euclid-s-division-lemma-to-show-that-the-cube-of-any-positive-integer-is-of-the-form-9m-9m-1-or-9m-8">Use Euclid’s Division Lemma to show that the cube of any positive integer is of the form \(9m\), \(9m+1\), or \(9m+8\)</a>
+<a class="nav-h2" href="#case-1-x-3q">Case 1: \(x = 3q\)</a>
+<a class="nav-h2" href="#case-2-x-3q-1">Case 2: \(x = 3q+1\)</a>
+<a class="nav-h2" href="#case-3-x-3q-2">Case 3: \(x = 3q+2\)</a>
+<a class="nav-h2" href="#final-conclusion-6">Final Conclusion</a>
+<a class="nav-h2" href="#frontend-shortcut-understanding-2">Frontend Shortcut Understanding</a>
+<a class="" href="#big-concept-table">Big Concept Table</a>
+<a class="" href="#how-to-decide-which-divisor-to-use">How to Decide Which Divisor to Use?</a>
+<a class="" href="#important-algebra-identities-used">Important Algebra Identities Used</a>
+<a class="" href="#common-student-mistakes">Common Student Mistakes</a>
+<a class="nav-h2" href="#mistake-1-forgetting-the-condition-on-remainder">Mistake 1: Forgetting the condition on remainder</a>
+<a class="nav-h2" href="#mistake-2-writing-wrong-possible-remainders">Mistake 2: Writing wrong possible remainders</a>
+<a class="nav-h2" href="#mistake-3-not-proving-all-cases">Mistake 3: Not proving all cases</a>
+<a class="nav-h2" href="#mistake-4-mixing-q-and-m">Mistake 4: Mixing \(q\) and \(m\)</a>
+<a class="" href="#topper-level-understanding">Topper-Level Understanding</a>
+<a class="" href="#extra-practice-simple-level">Extra Practice: Simple Level</a>
+<a class="nav-h2" href="#q1-write-the-possible-forms-of-a-positive-integer-when-divided-by-5">Q1. Write the possible forms of a positive integer when divided by \(5\)</a>
+<a class="nav-h2" href="#q2-write-the-possible-forms-of-a-positive-integer-when-divided-by-6">Q2. Write the possible forms of a positive integer when divided by \(6\)</a>
+<a class="" href="#extra-practice-intermediate-level">Extra Practice: Intermediate Level</a>
+<a class="nav-h2" href="#q3-show-that-any-positive-odd-integer-is-of-the-form-6q-1-6q-3-or-6q-5">Q3. Show that any positive odd integer is of the form \(6q+1\), \(6q+3\), or \(6q+5\)</a>
+<a class="nav-h2" href="#q4-show-that-the-square-of-an-even-integer-is-divisible-by-4">Q4. Show that the square of an even integer is divisible by \(4\)</a>
+<a class="" href="#extra-practice-advanced-level">Extra Practice: Advanced Level</a>
+<a class="nav-h2" href="#q5-show-that-the-square-of-any-integer-is-of-the-form-4q-or-4q-1">Q5. Show that the square of any integer is of the form \(4q\) or \(4q+1\)</a>
+<a class="nav-h2" href="#q6-prove-that-no-perfect-square-is-of-the-form-3m-2">Q6. Prove that no perfect square is of the form \(3m+2\)</a>
+<a class="" href="#board-exam-answer-template">Board Exam Answer Template</a>
+<a class="" href="#one-page-revision-summary">One-Page Revision Summary</a>
+<a class="nav-h2" href="#euclid-s-division-lemma">Euclid’s Division Lemma</a>
+<a class="nav-h2" href="#possible-forms">Possible Forms</a>
+<a class="nav-h2" href="#must-remember-results">Must-Remember Results</a>
+<a class="" href="#final-learning-flow">Final Learning Flow</a></div></aside>
+<div class="page" id="top">
+<header class="hero">
+<span class="eyebrow">CBSE Class 10 • Real Numbers</span>
+<h1>Euclid’s Division Lemma – Applications</h1>
+<h2>Simple → Intermediate → Advanced Expansion</h2>
+<p>A clean printable study page for Class 10 students, with textbook-style mathematical symbols, board-exam writing format, topper-level understanding, examples, tables, and revision summary.</p>
+<div class="actions"><button onclick="window.print()">🖨️ Print / Save PDF</button><a class="btn" href="#one-page-revision-summary">One-Page Revision</a></div>
+</header>
+<section class="quick-cards">
+<div class="qcard"><b>Main Formula</b>\(a=bq+r\)</div>
+<div class="qcard"><b>Remainder Rule</b>\(0\le r<b\)</div>
+<div class="qcard"><b>Even / Odd</b>\(2q,\;2q+1\)</div>
+<div class="qcard"><b>Cube Forms</b>\(9m,\;9m+1,\;9m+8\)</div>
+</section>
+<main class="content-shell">
+<p>Below is a <strong>more elaborate version</strong> of the same topic, written for <strong>Class 10 CBSE average students → topper level</strong>.</p>
+<div class="soft-divider"></div>
+<section class="lesson-card" id="euclid-s-division-lemma-applications"><div class="section-kicker">CBSE Class 10 • Real Numbers</div><h1>Euclid’s Division Lemma – Applications</h1>
+<h2 id="simple-intermediate-and-advanced-expansion">Simple, Intermediate and Advanced Expansion</h2>
+<p>Euclid’s Division Lemma is one of the most useful tools in <strong>Real Numbers</strong>. It helps us prove that numbers follow a fixed pattern when divided by another number.</p>
+<p>The main formula is:</p>
+<div class="math-card">\[a = bq + r,\quad 0 \le r < b\]</div>
+<p>Here:</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Symbol</th><th>Meaning</th><th>Simple meaning</th></tr></thead>
+<tbody>
+<tr><td>\(a\)</td><td>Dividend</td><td>Number we are dividing</td></tr>
+<tr><td>\(b\)</td><td>Divisor</td><td>Number by which we divide</td></tr>
+<tr><td>\(q\)</td><td>Quotient</td><td>How many times divisor goes</td></tr>
+<tr><td>\(r\)</td><td>Remainder</td><td>What is left after division</td></tr>
+</tbody>
+</table></div>
+<p>Example:</p>
+<p>If \(a = 17\) and \(b = 5\),</p>
+<div class="math-card">\[17 = 5 \times 3 + 2\]</div>
+<p>So,</p>
+<div class="math-card">\[q = 3,\quad r = 2\]</div>
+<p>Since \(0 \le r < 5\), possible remainders are:</p>
+<div class="math-card">\[0,1,2,3,4\]</div>
+<div class="soft-divider"></div>
+</section>
+<section class="lesson-card" id="1-backend-concept-what-actually-happens"><div class="section-kicker">CBSE Class 10 • Real Numbers</div><h1>1. Backend Concept: What Actually Happens?</h1>
+<p>When we divide any positive integer by another positive integer, we always get a fixed set of possible remainders.</p>
+<p>For example, if we divide any number by \(2\), the remainder can only be:</p>
+<div class="math-card">\[0 \quad \text{or} \quad 1\]</div>
+<p>So any number can be written as:</p>
+<div class="math-card">\[2q\]</div>
+<p>or</p>
+<div class="math-card">\[2q+1\]</div>
+<p>That is why:</p>
+<div class="math-card">\[2q = \text{even number}\]</div>
+<div class="math-card">\[2q+1 = \text{odd number}\]</div>
+<p>Similarly, if we divide by \(3\), possible remainders are:</p>
+<div class="math-card">\[0,1,2\]</div>
+<p>So any number can be written as:</p>
+<div class="math-card">\[3q,\quad 3q+1,\quad 3q+2\]</div>
+<p>This is the basic logic behind all examples.</p>
+<div class="soft-divider"></div>
+</section>
+<section class="lesson-card" id="2-frontend-concept-student-friendly-understanding"><div class="section-kicker">CBSE Class 10 • Real Numbers</div><h1>2. Frontend Concept: Student-Friendly Understanding</h1>
+<p>Think like this:</p>
+<p>When a number is divided by another number, the answer may not divide exactly. The leftover part is called the <strong>remainder</strong>.</p>
+<p>The remainder is always smaller than the divisor.</p>
+<p>Example:</p>
+<p>When dividing by \(4\), the remainder can never be \(4\) or more.</p>
+<p>So possible remainders are:</p>
+<div class="math-card">\[0,1,2,3\]</div>
+<p>Therefore, any number divided by \(4\) must be one of these forms:</p>
+<div class="math-card">\[4q,\quad 4q+1,\quad 4q+2,\quad 4q+3\]</div>
+<p>This is the main trick.</p>
+<div class="soft-divider"></div>
+</section>
+<section class="lesson-card" id="level-1-simple-level"><div class="section-kicker">CBSE Class 10 • Real Numbers</div><h1>Level 1: Simple Level</h1>
+<h2 id="example-1">Example 1</h2>
+<h2 id="show-that-every-positive-even-integer-is-of-the-form-2q-and-every-positive-odd-integer-is-of-the-form-2q-1">Show that every positive even integer is of the form \(2q\), and every positive odd integer is of the form \(2q+1\)</h2>
+<h3 id="step-by-step-backend-explanation">Step-by-Step Backend Explanation</h3>
+<p>Let \(a\) be any positive integer.</p>
+<p>Apply Euclid’s Division Lemma with divisor \(2\).</p>
+<div class="math-card">\[a = 2q + r\]</div>
+<p>where,</p>
+<div class="math-card">\[0 \le r < 2\]</div>
+<p>So the possible values of \(r\) are:</p>
+<div class="math-card">\[r = 0 \quad \text{or} \quad r = 1\]</div>
+<p>Now we check both cases.</p>
+<div class="soft-divider"></div>
+<h3 id="case-1-r-0">Case 1: \(r = 0\)</h3>
+<div class="math-card">\[a = 2q + 0\]</div>
+<div class="math-card">\[a = 2q\]</div>
+<p>This means \(a\) is exactly divisible by \(2\).</p>
+<p>So \(a\) is an even number.</p>
+<p>Examples:</p>
+<div class="math-card">\[2 = 2(1)\]</div>
+<div class="math-card">\[8 = 2\(4\)\]</div>
+<div class="math-card">\[20 = 2(10)\]</div>
+<p>So all these are of the form \(2q\).</p>
+<div class="soft-divider"></div>
+<h3 id="case-2-r-1">Case 2: \(r = 1\)</h3>
+<div class="math-card">\[a = 2q + 1\]</div>
+<p>This means when \(a\) is divided by \(2\), the remainder is (1).</p>
+<p>So \(a\) is an odd number.</p>
+<p>Examples:</p>
+<div class="math-card">\[3 = 2(1)+1\]</div>
+<div class="math-card">\[9 = 2\(4\)+1\]</div>
+<div class="math-card">\[21 = 2(10)+1\]</div>
+<p>So all these are of the form \(2q+1\).</p>
+<div class="soft-divider"></div>
+<h3 id="final-conclusion">Final Conclusion</h3>
+<p>Therefore, every positive integer is either of the form:</p>
+<div class="math-card">\[2q\]</div>
+<p>or</p>
+<div class="math-card">\[2q+1\]</div>
+<p>Hence, every positive even integer is of the form \(2q\), and every positive odd integer is of the form \(2q+1\).</p>
+<div class="soft-divider"></div>
+<h2 id="student-memory-table">Student Memory Table</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Number</th><th>Form</th><th>Type</th></tr></thead>
+<tbody>
+<tr><td>\(2q\)</td><td>Divisible by 2</td><td>Even</td></tr>
+<tr><td>\(2q+1\)</td><td>Remainder 1 when divided by 2</td><td>Odd</td></tr>
+</tbody>
+</table></div>
+<div class="soft-divider"></div>
+<h2 id="exam-writing-format">Exam Writing Format</h2>
+<p>Let \(a\) be any positive integer. By Euclid’s Division Lemma, for \(b=2\), there exist integers \(q\) and \(r\) such that:</p>
+<div class="math-card">\[a = 2q+r,\quad 0 \le r < 2\]</div>
+<p>Therefore,</p>
+<div class="math-card">\[r = 0 \quad \text{or} \quad r = 1\]</div>
+<p>If \(r=0\),</p>
+<div class="math-card">\[a=2q\]</div>
+<p>So \(a\) is even.</p>
+<p>If \(r=1\),</p>
+<div class="math-card">\[a=2q+1\]</div>
+<p>So \(a\) is odd.</p>
+<p>Hence proved.</p>
+<div class="soft-divider"></div>
+</section>
+<section class="lesson-card" id="example-2"><div class="section-kicker">CBSE Class 10 • Real Numbers</div><h1>Example 2</h1>
+<h2 id="show-that-any-positive-integer-is-of-the-form-3q-3q-1-or-3q-2">Show that any positive integer is of the form \(3q\), \(3q+1\), or \(3q+2\)</h2>
+<h3 id="backend-explanation">Backend Explanation</h3>
+<p>Let \(a\) be any positive integer.</p>
+<p>Apply Euclid’s Division Lemma with divisor \(3\).</p>
+<div class="math-card">\[a = 3q+r\]</div>
+<p>where,</p>
+<div class="math-card">\[0 \le r < 3\]</div>
+<p>So possible remainders are:</p>
+<div class="math-card">\[r = 0,1,2\]</div>
+<p>Now we form cases.</p>
+<div class="soft-divider"></div>
+<h3 id="case-1-r-0-2">Case 1: \(r=0\)</h3>
+<div class="math-card">\[a = 3q+0\]</div>
+<div class="math-card">\[a = 3q\]</div>
+<p>This means \(a\) is divisible by \(3\).</p>
+<p>Examples:</p>
+<div class="math-card">\[6 = 3\(2\)\]</div>
+<div class="math-card">\[12 = 3\(4\)\]</div>
+<div class="soft-divider"></div>
+<h3 id="case-2-r-1-2">Case 2: \(r=1\)</h3>
+<div class="math-card">\[a = 3q+1\]</div>
+<p>This means remainder is (1) when divided by \(3\).</p>
+<p>Examples:</p>
+<div class="math-card">\[7 = 3\(2\)+1\]</div>
+<div class="math-card">\[13 = 3\(4\)+1\]</div>
+<div class="soft-divider"></div>
+<h3 id="case-3-r-2">Case 3: \(r=2\)</h3>
+<div class="math-card">\[a = 3q+2\]</div>
+<p>This means remainder is \(2\) when divided by \(3\).</p>
+<p>Examples:</p>
+<div class="math-card">\[8 = 3\(2\)+2\]</div>
+<div class="math-card">\[14 = 3\(4\)+2\]</div>
+<div class="soft-divider"></div>
+<h3 id="final-conclusion-2">Final Conclusion</h3>
+<p>Hence, any positive integer is of the form:</p>
+<div class="math-card">\[3q,\quad 3q+1,\quad 3q+2\]</div>
+<div class="soft-divider"></div>
+<h2 id="frontend-pattern">Frontend Pattern</h2>
+<p>When divisor is \(3\):</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Remainder</th><th>Number form</th></tr></thead>
+<tbody>
+<tr><td>(0)</td><td>\(3q\)</td></tr>
+<tr><td>(1)</td><td>\(3q+1\)</td></tr>
+<tr><td>\(2\)</td><td>\(3q+2\)</td></tr>
+</tbody>
+</table></div>
+<div class="soft-divider"></div>
+</section>
+<section class="lesson-card" id="level-2-intermediate-level"><div class="section-kicker">CBSE Class 10 • Real Numbers</div><h1>Level 2: Intermediate Level</h1>
+<h2 id="example-3">Example 3</h2>
+<h2 id="show-that-any-positive-odd-integer-is-of-the-form-4q-1-or-4q-3">Show that any positive odd integer is of the form \(4q+1\) or \(4q+3\)</h2>
+<h3 id="why-divisor-4-is-used">Why divisor \(4\) is used?</h3>
+<p>The required answer has forms:</p>
+<div class="math-card">\[4q+1,\quad 4q+3\]</div>
+<p>So we must divide by \(4\).</p>
+<div class="soft-divider"></div>
+<h3 id="backend-explanation-2">Backend Explanation</h3>
+<p>Let \(a\) be any positive odd integer.</p>
+<p>Apply Euclid’s Division Lemma with divisor \(4\).</p>
+<div class="math-card">\[a = 4q+r\]</div>
+<p>where,</p>
+<div class="math-card">\[0 \le r < 4\]</div>
+<p>So possible remainders are:</p>
+<div class="math-card">\[r = 0,1,2,3\]</div>
+<p>Therefore, \(a\) can be written as:</p>
+<div class="math-card">\[a = 4q\]</div>
+<p>or</p>
+<div class="math-card">\[a = 4q+1\]</div>
+<p>or</p>
+<div class="math-card">\[a = 4q+2\]</div>
+<p>or</p>
+<div class="math-card">\[a = 4q+3\]</div>
+<p>Now we check which forms are odd.</p>
+<div class="soft-divider"></div>
+<h3 id="form-1-4q">Form 1: \(4q\)</h3>
+<div class="math-card">\[4q = 2\(2q\)\]</div>
+<p>So \(4q\) is divisible by \(2\). Therefore, \(4q\) is even.</p>
+<p>So an odd integer cannot be \(4q\).</p>
+<div class="soft-divider"></div>
+<h3 id="form-2-4q-1">Form 2: \(4q+1\)</h3>
+<p>Since \(4q\) is even, adding (1) makes it odd.</p>
+<p>So \(4q+1\) is odd.</p>
+<div class="soft-divider"></div>
+<h3 id="form-3-4q-2">Form 3: \(4q+2\)</h3>
+<div class="math-card">\[4q+2 = 2\(2q+1\)\]</div>
+<p>So \(4q+2\) is divisible by \(2\). Therefore, \(4q+2\) is even.</p>
+<p>So an odd integer cannot be \(4q+2\).</p>
+<div class="soft-divider"></div>
+<h3 id="form-4-4q-3">Form 4: \(4q+3\)</h3>
+<p>Since \(4q\) is even, adding \(3\) makes it odd.</p>
+<p>So \(4q+3\) is odd.</p>
+<div class="soft-divider"></div>
+<h3 id="final-conclusion-3">Final Conclusion</h3>
+<p>Since \(a\) is an odd integer, it can only be of the form:</p>
+<div class="math-card">\[4q+1\]</div>
+<p>or</p>
+<div class="math-card">\[4q+3\]</div>
+<p>Hence proved.</p>
+<div class="soft-divider"></div>
+<h2 id="frontend-student-table">Frontend Student Table</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Form</th><th>Type</th><th>Accepted for odd number?</th></tr></thead>
+<tbody>
+<tr><td>\(4q\)</td><td>Even</td><td>No</td></tr>
+<tr><td>\(4q+1\)</td><td>Odd</td><td>Yes</td></tr>
+<tr><td>\(4q+2\)</td><td>Even</td><td>No</td></tr>
+<tr><td>\(4q+3\)</td><td>Odd</td><td>Yes</td></tr>
+</tbody>
+</table></div>
+<div class="soft-divider"></div>
+<h2 id="simple-examples">Simple Examples</h2>
+<div class="math-card">\[1 = 4(0)+1\]</div>
+<div class="math-card">\[3 = 4(0)+3\]</div>
+<div class="math-card">\[5 = 4(1)+1\]</div>
+<div class="math-card">\[7 = 4(1)+3\]</div>
+<div class="math-card">\[9 = 4\(2\)+1\]</div>
+<div class="math-card">\[11 = 4\(2\)+3\]</div>
+<p>So every odd number is either \(4q+1\) or \(4q+3\).</p>
+<div class="soft-divider"></div>
+</section>
+<section class="lesson-card" id="example-4"><div class="section-kicker">CBSE Class 10 • Real Numbers</div><h1>Example 4</h1>
+<h2 id="show-that-the-square-of-an-odd-integer-is-of-the-form-4q-1">Show that the square of an odd integer is of the form \(4q+1\)</h2>
+<h3 id="backend-explanation-3">Backend Explanation</h3>
+<p>Let \(x\) be any odd integer.</p>
+<p>We know that every odd integer is of the form:</p>
+<div class="math-card">\[2m+1\]</div>
+<p>So,</p>
+<div class="math-card">\[x = 2m+1\]</div>
+<p>Now square both sides:</p>
+<div class="math-card">\[x^2 = \(2m+1\)^2\]</div>
+<p>Using identity:</p>
+<div class="math-card">\[\(a+b\)^2 = a^2+2ab+b^2\]</div>
+<p>we get:</p>
+<div class="math-card">\[x^2 = \(2m\)^2 + 2\(2m\)(1)+1^2\]</div>
+<div class="math-card">\[x^2 = 4m^2 + 4m + 1\]</div>
+<p>Now take \(4\) common from the first two terms:</p>
+<div class="math-card">\[x^2 = 4\(m^2+m\)+1\]</div>
+<p>Let,</p>
+<div class="math-card">\[q = m^2+m\]</div>
+<p>Since \(m\) is an integer, \(m^2+m\) is also an integer.</p>
+<p>So,</p>
+<div class="math-card">\[x^2 = 4q+1\]</div>
+<div class="soft-divider"></div>
+<h3 id="final-conclusion-4">Final Conclusion</h3>
+<p>Hence, the square of any odd integer is of the form:</p>
+<div class="math-card">\[4q+1\]</div>
+<div class="soft-divider"></div>
+<h2 id="frontend-explanation">Frontend Explanation</h2>
+<p>Odd numbers are:</p>
+<div class="math-card">\[1,3,5,7,9,11,\ldots\]</div>
+<p>Their squares are:</p>
+<div class="math-card">\[1^2=1\]</div>
+<div class="math-card">\[3^2=9\]</div>
+<div class="math-card">\[5^2=25\]</div>
+<div class="math-card">\[7^2=49\]</div>
+<p>Now divide each square by \(4\):</p>
+<div class="math-card">\[1 = 4(0)+1\]</div>
+<div class="math-card">\[9 = 4\(2\)+1\]</div>
+<div class="math-card">\[25 = 4\(6\)+1\]</div>
+<div class="math-card">\[49 = 4\(12\)+1\]</div>
+<p>So the square of every odd integer leaves remainder (1) when divided by \(4\).</p>
+<p>Therefore, it is of the form:</p>
+<div class="math-card">\[4q+1\]</div>
+<div class="soft-divider"></div>
+<h2 id="important-exam-point">Important Exam Point</h2>
+<p>Do not write:</p>
+<div class="math-card">\[x = 2q+1\]</div>
+<p>and later also use \(q\) again in:</p>
+<div class="math-card">\[4q+1\]</div>
+<p>It is better to write:</p>
+<div class="math-card">\[x = 2m+1\]</div>
+<p>Then after simplification, write:</p>
+<div class="math-card">\[q = m^2+m\]</div>
+<p>This avoids confusion.</p>
+<div class="soft-divider"></div>
+</section>
+<section class="lesson-card" id="level-3-advanced-level"><div class="section-kicker">CBSE Class 10 • Real Numbers</div><h1>Level 3: Advanced Level</h1>
+<h2 id="example-5">Example 5</h2>
+<h2 id="show-that-the-square-of-any-positive-integer-is-of-the-form-3m-or-3m-1">Show that the square of any positive integer is of the form \(3m\) or \(3m+1\)</h2>
+<h3 id="understanding-the-question">Understanding the Question</h3>
+<p>The question asks about the square of any positive integer.</p>
+<p>So we first express any positive integer using Euclid’s Division Lemma.</p>
+<p>Since final answer is connected to \(3m\), we divide by \(3\).</p>
+<div class="soft-divider"></div>
+<h3 id="backend-explanation-4">Backend Explanation</h3>
+<p>Let \(a\) be any positive integer.</p>
+<p>By Euclid’s Division Lemma, with divisor \(3\), we have:</p>
+<div class="math-card">\[a = 3q+r,\quad 0 \le r < 3\]</div>
+<p>Therefore,</p>
+<div class="math-card">\[r = 0,1,2\]</div>
+<p>So,</p>
+<div class="math-card">\[a = 3q\]</div>
+<p>or</p>
+<div class="math-card">\[a = 3q+1\]</div>
+<p>or</p>
+<div class="math-card">\[a = 3q+2\]</div>
+<p>Now we square each case.</p>
+<div class="soft-divider"></div>
+<h2 id="case-1-a-3q">Case 1: \(a = 3q\)</h2>
+<div class="math-card">\[a^2 = \(3q\)^2\]</div>
+<div class="math-card">\[a^2 = 9q^2\]</div>
+<p>Write \(9q^2\) as a multiple of \(3\):</p>
+<div class="math-card">\[a^2 = 3\(3q^2\)\]</div>
+<p>Let,</p>
+<div class="math-card">\[m = 3q^2\]</div>
+<p>So,</p>
+<div class="math-card">\[a^2 = 3m\]</div>
+<p>Thus, in this case, the square is of the form \(3m\).</p>
+<div class="soft-divider"></div>
+<h2 id="case-2-a-3q-1">Case 2: \(a = 3q+1\)</h2>
+<div class="math-card">\[a^2 = \(3q+1\)^2\]</div>
+<p>Using identity:</p>
+<div class="math-card">\[\(a+b\)^2 = a^2+2ab+b^2\]</div>
+<div class="math-card">\[a^2 = \(3q\)^2 + 2\(3q\)(1)+1^2\]</div>
+<div class="math-card">\[a^2 = 9q^2 + 6q + 1\]</div>
+<p>Take \(3\) common from the first two terms:</p>
+<div class="math-card">\[a^2 = 3\(3q^2+2q\)+1\]</div>
+<p>Let,</p>
+<div class="math-card">\[m = 3q^2+2q\]</div>
+<p>So,</p>
+<div class="math-card">\[a^2 = 3m+1\]</div>
+<p>Thus, in this case, the square is of the form \(3m+1\).</p>
+<div class="soft-divider"></div>
+<h2 id="case-3-a-3q-2">Case 3: \(a = 3q+2\)</h2>
+<div class="math-card">\[a^2 = \(3q+2\)^2\]</div>
+<p>Using identity:</p>
+<div class="math-card">\[\(a+b\)^2 = a^2+2ab+b^2\]</div>
+<div class="math-card">\[a^2 = \(3q\)^2 + 2\(3q\)\(2\)+2^2\]</div>
+<div class="math-card">\[a^2 = 9q^2 + 12q + 4\]</div>
+<p>Now rewrite \(4\) as:</p>
+<div class="math-card">\[4 = 3+1\]</div>
+<p>So,</p>
+<div class="math-card">\[a^2 = 9q^2+12q+3+1\]</div>
+<p>Take \(3\) common:</p>
+<div class="math-card">\[a^2 = 3\(3q^2+4q+1\)+1\]</div>
+<p>Let,</p>
+<div class="math-card">\[m = 3q^2+4q+1\]</div>
+<p>So,</p>
+<div class="math-card">\[a^2 = 3m+1\]</div>
+<p>Thus, in this case also, the square is of the form \(3m+1\).</p>
+<div class="soft-divider"></div>
+<h2 id="final-conclusion-5">Final Conclusion</h2>
+<p>Therefore, the square of any positive integer is either of the form:</p>
+<div class="math-card">\[3m\]</div>
+<p>or</p>
+<div class="math-card">\[3m+1\]</div>
+<p>Hence proved.</p>
+<div class="soft-divider"></div>
+<h2 id="frontend-shortcut-understanding">Frontend Shortcut Understanding</h2>
+<p>Any number divided by \(3\) leaves remainder:</p>
+<div class="math-card">\[0,1,2\]</div>
+<p>Now check squares of remainders:</p>
+<div class="math-card">\[0^2 = 0\]</div>
+<div class="math-card">\[1^2 = 1\]</div>
+<div class="math-card">\[2^2 = 4\]</div>
+<p>But,</p>
+<div class="math-card">\[4 = 3+1\]</div>
+<p>So the possible remainders of squares when divided by \(3\) are only:</p>
+<div class="math-card">\[0 \quad \text{or} \quad 1\]</div>
+<p>Therefore, square of any positive integer is:</p>
+<div class="math-card">\[3m\]</div>
+<p>or</p>
+<div class="math-card">\[3m+1\]</div>
+<p>Never:</p>
+<div class="math-card">\[3m+2\]</div>
+<div class="soft-divider"></div>
+<h2 id="example-table">Example Table</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Number \(a\)</th><th>Square \(a^2\)</th><th>Form</th></tr></thead>
+<tbody>
+<tr><td>(1)</td><td>(1)</td><td>(3(0)+1)</td></tr>
+<tr><td>\(2\)</td><td>\(4\)</td><td>(3(1)+1)</td></tr>
+<tr><td>\(3\)</td><td>\(9\)</td><td>(3\(3\))</td></tr>
+<tr><td>\(4\)</td><td>\(16\)</td><td>(3\(5\)+1)</td></tr>
+<tr><td>\(5\)</td><td>\(25\)</td><td>(3(8)+1)</td></tr>
+<tr><td>\(6\)</td><td>\(36\)</td><td>(3\(12\))</td></tr>
+</tbody>
+</table></div>
+<div class="soft-divider"></div>
+</section>
+<section class="lesson-card" id="example-6"><div class="section-kicker">CBSE Class 10 • Real Numbers</div><h1>Example 6</h1>
+<h2 id="use-euclid-s-division-lemma-to-show-that-the-cube-of-any-positive-integer-is-of-the-form-9m-9m-1-or-9m-8">Use Euclid’s Division Lemma to show that the cube of any positive integer is of the form \(9m\), \(9m+1\), or \(9m+8\)</h2>
+<h3 id="understanding-the-question-2">Understanding the Question</h3>
+<p>The result contains:</p>
+<div class="math-card">\[9m,\quad 9m+1,\quad 9m+8\]</div>
+<p>But we start by dividing the number by \(3\), because cubing forms like \(3q\), \(3q+1\), and \(3q+2\) naturally gives multiples of \(9\).</p>
+<div class="soft-divider"></div>
+<h3 id="backend-explanation-5">Backend Explanation</h3>
+<p>Let \(x\) be any positive integer.</p>
+<p>By Euclid’s Division Lemma, with divisor \(3\):</p>
+<div class="math-card">\[x = 3q+r,\quad 0 \le r < 3\]</div>
+<p>So,</p>
+<div class="math-card">\[r = 0,1,2\]</div>
+<p>Therefore,</p>
+<div class="math-card">\[x = 3q\]</div>
+<p>or</p>
+<div class="math-card">\[x = 3q+1\]</div>
+<p>or</p>
+<div class="math-card">\[x = 3q+2\]</div>
+<p>Now cube each case.</p>
+<div class="soft-divider"></div>
+<h2 id="case-1-x-3q">Case 1: \(x = 3q\)</h2>
+<div class="math-card">\[x^3 = \(3q\)^3\]</div>
+<div class="math-card">\[x^3 = 27q^3\]</div>
+<p>Now write \(27q^3\) as a multiple of \(9\):</p>
+<div class="math-card">\[x^3 = 9\(3q^3\)\]</div>
+<p>Let,</p>
+<div class="math-card">\[m = 3q^3\]</div>
+<p>So,</p>
+<div class="math-card">\[x^3 = 9m\]</div>
+<p>Thus, in this case, cube is of the form \(9m\).</p>
+<div class="soft-divider"></div>
+<h2 id="case-2-x-3q-1">Case 2: \(x = 3q+1\)</h2>
+<div class="math-card">\[x^3 = \(3q+1\)^3\]</div>
+<p>Using identity:</p>
+<div class="math-card">\[\(a+b\)^3 = a^3+3a^2b+3ab^2+b^3\]</div>
+<div class="math-card">\[x^3 = \(3q\)^3+3\(3q\)^2(1)+3\(3q\)(1)^2+1^3\]</div>
+<div class="math-card">\[x^3 = 27q^3+27q^2+9q+1\]</div>
+<p>Take \(9\) common from the first three terms:</p>
+<div class="math-card">\[x^3 = 9\(3q^3+3q^2+q\)+1\]</div>
+<p>Let,</p>
+<div class="math-card">\[m = 3q^3+3q^2+q\]</div>
+<p>So,</p>
+<div class="math-card">\[x^3 = 9m+1\]</div>
+<p>Thus, in this case, cube is of the form \(9m+1\).</p>
+<div class="soft-divider"></div>
+<h2 id="case-3-x-3q-2">Case 3: \(x = 3q+2\)</h2>
+<div class="math-card">\[x^3 = \(3q+2\)^3\]</div>
+<p>Using identity:</p>
+<div class="math-card">\[\(a+b\)^3 = a^3+3a^2b+3ab^2+b^3\]</div>
+<div class="math-card">\[x^3 = \(3q\)^3+3\(3q\)^2\(2\)+3\(3q\)\(2\)^2+2^3\]</div>
+<div class="math-card">\[x^3 = 27q^3+54q^2+36q+8\]</div>
+<p>Take \(9\) common from the first three terms:</p>
+<div class="math-card">\[x^3 = 9\(3q^3+6q^2+4q\)+8\]</div>
+<p>Let,</p>
+<div class="math-card">\[m = 3q^3+6q^2+4q\]</div>
+<p>So,</p>
+<div class="math-card">\[x^3 = 9m+8\]</div>
+<p>Thus, in this case, cube is of the form \(9m+8\).</p>
+<div class="soft-divider"></div>
+<h2 id="final-conclusion-6">Final Conclusion</h2>
+<p>Hence, the cube of any positive integer is of the form:</p>
+<div class="math-card">\[9m,\quad 9m+1,\quad \text{or} \quad 9m+8\]</div>
+<p>Hence proved.</p>
+<div class="soft-divider"></div>
+<h2 id="frontend-shortcut-understanding-2">Frontend Shortcut Understanding</h2>
+<p>Any number divided by \(3\) leaves remainder:</p>
+<div class="math-card">\[0,1,2\]</div>
+<p>Now cube the remainders:</p>
+<div class="math-card">\[0^3 = 0\]</div>
+<div class="math-card">\[1^3 = 1\]</div>
+<div class="math-card">\[2^3 = 8\]</div>
+<p>So cube of any integer gives remainder:</p>
+<div class="math-card">\[0,1,8\]</div>
+<p>when expressed in terms of \(9\).</p>
+<p>Therefore, cube of any positive integer is:</p>
+<div class="math-card">\[9m\]</div>
+<p>or</p>
+<div class="math-card">\[9m+1\]</div>
+<p>or</p>
+<div class="math-card">\[9m+8\]</div>
+<div class="soft-divider"></div>
+</section>
+<section class="lesson-card" id="big-concept-table"><div class="section-kicker">CBSE Class 10 • Real Numbers</div><h1>Big Concept Table</h1>
+<div class="table-wrap"><table>
+<thead><tr><th>Question</th><th>Divisor used</th><th>Remainders</th><th>Final forms</th></tr></thead>
+<tbody>
+<tr><td>Even / odd numbers</td><td>\(2\)</td><td>\(0,1\)</td><td>\(2q,\ 2q+1\)</td></tr>
+<tr><td>Any integer with divisor \(3\)</td><td>\(3\)</td><td>\(0,1,2\)</td><td>\(3q,\ 3q+1,\ 3q+2\)</td></tr>
+<tr><td>Odd integer with divisor \(4\)</td><td>\(4\)</td><td>\(0,1,2,3\)</td><td>\(4q+1,\ 4q+3\)</td></tr>
+<tr><td>Square of odd integer</td><td>\(2\)</td><td>Odd form</td><td>\(4q+1\)</td></tr>
+<tr><td>Square of any integer</td><td>\(3\)</td><td>\(0,1,2\)</td><td>\(3m,\ 3m+1\)</td></tr>
+<tr><td>Cube of any integer</td><td>\(3\)</td><td>\(0,1,2\)</td><td>\(9m,\ 9m+1,\ 9m+8\)</td></tr>
+</tbody>
+</table></div>
+<div class="soft-divider"></div>
+</section>
+<section class="lesson-card" id="how-to-decide-which-divisor-to-use"><div class="section-kicker">CBSE Class 10 • Real Numbers</div><h1>How to Decide Which Divisor to Use?</h1>
+<p>This is very important for exams.</p>
+<div class="table-wrap"><table>
+<thead><tr><th>Final answer contains</th><th>Use divisor</th></tr></thead>
+<tbody>
+<tr><td>\(2q\), \(2q+1\)</td><td>\(2\)</td></tr>
+<tr><td>\(3q\), \(3q+1\), \(3q+2\)</td><td>\(3\)</td></tr>
+<tr><td>\(4q+1\), \(4q+3\)</td><td>\(4\)</td></tr>
+<tr><td>\(3m\), \(3m+1\)</td><td>\(3\)</td></tr>
+<tr><td>\(9m\), \(9m+1\), \(9m+8\)</td><td>Start with \(3\), then cube</td></tr>
+</tbody>
+</table></div>
+<div class="soft-divider"></div>
+</section>
+<section class="lesson-card" id="important-algebra-identities-used"><div class="section-kicker">CBSE Class 10 • Real Numbers</div><h1>Important Algebra Identities Used</h1>
+<p>For squares:</p>
+<div class="math-card">\[\(a+b\)^2 = a^2+2ab+b^2\]</div>
+<p>Examples:</p>
+<div class="math-card">\[\(3q+1\)^2 = 9q^2+6q+1\]</div>
+<div class="math-card">\[\(3q+2\)^2 = 9q^2+12q+4\]</div>
+<p>For cubes:</p>
+<div class="math-card">\[\(a+b\)^3 = a^3+3a^2b+3ab^2+b^3\]</div>
+<p>Examples:</p>
+<div class="math-card">\[\(3q+1\)^3 = 27q^3+27q^2+9q+1\]</div>
+<div class="math-card">\[\(3q+2\)^3 = 27q^3+54q^2+36q+8\]</div>
+<div class="soft-divider"></div>
+</section>
+<section class="lesson-card" id="common-student-mistakes"><div class="section-kicker">CBSE Class 10 • Real Numbers</div><h1>Common Student Mistakes</h1>
+<h2 id="mistake-1-forgetting-the-condition-on-remainder">Mistake 1: Forgetting the condition on remainder</h2>
+<p>Wrong:</p>
+<div class="math-card">\[a = bq+r\]</div>
+<p>Correct:</p>
+<div class="math-card">\[a = bq+r,\quad 0 \le r < b\]</div>
+<p>The condition is very important.</p>
+<div class="soft-divider"></div>
+<h2 id="mistake-2-writing-wrong-possible-remainders">Mistake 2: Writing wrong possible remainders</h2>
+<p>If divisor is \(4\), possible remainders are:</p>
+<div class="math-card">\[0,1,2,3\]</div>
+<p>Not:</p>
+<div class="math-card">\[1,2,3,4\]</div>
+<p>Remainder always starts from (0) and ends at \(b-1\).</p>
+<div class="soft-divider"></div>
+<h2 id="mistake-3-not-proving-all-cases">Mistake 3: Not proving all cases</h2>
+<p>If possible forms are:</p>
+<div class="math-card">\[3q,\quad 3q+1,\quad 3q+2\]</div>
+<p>You must check all three cases.</p>
+<div class="soft-divider"></div>
+<h2 id="mistake-4-mixing-q-and-m">Mistake 4: Mixing \(q\) and \(m\)</h2>
+<p>In one step, if you use:</p>
+<div class="math-card">\[a = 3q+1\]</div>
+<p>After squaring, you can write:</p>
+<div class="math-card">\[a^2 = 3m+1\]</div>
+<p>where \(m\) is another integer.</p>
+<p>Do not confuse \(q\) and \(m\). They are just integer symbols.</p>
+<div class="soft-divider"></div>
+</section>
+<section class="lesson-card" id="topper-level-understanding"><div class="section-kicker">CBSE Class 10 • Real Numbers</div><h1>Topper-Level Understanding</h1>
+<p>The whole idea is based on <strong>remainders</strong>.</p>
+<p>When a number is divided by \(b\), the remainder can be:</p>
+<div class="math-card">\[0,1,2,\ldots,b-1\]</div>
+<p>So every integer can be grouped based on its remainder.</p>
+<p>This grouping is called working with <strong>forms of integers</strong>.</p>
+<p>For example:</p>
+<p>When divided by \(5\), any integer is of the form:</p>
+<div class="math-card">\[5q,\quad 5q+1,\quad 5q+2,\quad 5q+3,\quad 5q+4\]</div>
+<p>When divided by \(6\), any integer is of the form:</p>
+<div class="math-card">\[6q,\quad 6q+1,\quad 6q+2,\quad 6q+3,\quad 6q+4,\quad 6q+5\]</div>
+<p>This is the same principle again and again.</p>
+<div class="soft-divider"></div>
+</section>
+<section class="lesson-card" id="extra-practice-simple-level"><div class="section-kicker">CBSE Class 10 • Real Numbers</div><h1>Extra Practice: Simple Level</h1>
+<h2 id="q1-write-the-possible-forms-of-a-positive-integer-when-divided-by-5">Q1. Write the possible forms of a positive integer when divided by \(5\)</h2>
+<p>By Euclid’s Division Lemma:</p>
+<div class="math-card">\[a = 5q+r,\quad 0 \le r < 5\]</div>
+<p>So,</p>
+<div class="math-card">\[r = 0,1,2,3,4\]</div>
+<p>Therefore,</p>
+<div class="math-card">\[a = 5q,\quad 5q+1,\quad 5q+2,\quad 5q+3,\quad 5q+4\]</div>
+<div class="soft-divider"></div>
+<h2 id="q2-write-the-possible-forms-of-a-positive-integer-when-divided-by-6">Q2. Write the possible forms of a positive integer when divided by \(6\)</h2>
+<div class="math-card">\[a = 6q+r,\quad 0 \le r < 6\]</div>
+<p>So,</p>
+<div class="math-card">\[r = 0,1,2,3,4,5\]</div>
+<p>Therefore,</p>
+<div class="math-card">\[a = 6q,\quad 6q+1,\quad 6q+2,\quad 6q+3,\quad 6q+4,\quad 6q+5\]</div>
+<div class="soft-divider"></div>
+</section>
+<section class="lesson-card" id="extra-practice-intermediate-level"><div class="section-kicker">CBSE Class 10 • Real Numbers</div><h1>Extra Practice: Intermediate Level</h1>
+<h2 id="q3-show-that-any-positive-odd-integer-is-of-the-form-6q-1-6q-3-or-6q-5">Q3. Show that any positive odd integer is of the form \(6q+1\), \(6q+3\), or \(6q+5\)</h2>
+<p>Let \(a\) be any positive integer.</p>
+<p>Using Euclid’s Division Lemma with divisor \(6\):</p>
+<div class="math-card">\[a = 6q+r,\quad 0 \le r < 6\]</div>
+<p>So,</p>
+<div class="math-card">\[r = 0,1,2,3,4,5\]</div>
+<p>Therefore,</p>
+<div class="math-card">\[a = 6q,\quad 6q+1,\quad 6q+2,\quad 6q+3,\quad 6q+4,\quad 6q+5\]</div>
+<p>Now check odd forms.</p>
+<div class="math-card">\[6q\]</div>
+<p>is even.</p>
+<div class="math-card">\[6q+1\]</div>
+<p>is odd.</p>
+<div class="math-card">\[6q+2\]</div>
+<p>is even.</p>
+<div class="math-card">\[6q+3\]</div>
+<p>is odd.</p>
+<div class="math-card">\[6q+4\]</div>
+<p>is even.</p>
+<div class="math-card">\[6q+5\]</div>
+<p>is odd.</p>
+<p>Hence, any positive odd integer is of the form:</p>
+<div class="math-card">\[6q+1,\quad 6q+3,\quad 6q+5\]</div>
+<div class="soft-divider"></div>
+<h2 id="q4-show-that-the-square-of-an-even-integer-is-divisible-by-4">Q4. Show that the square of an even integer is divisible by \(4\)</h2>
+<p>Let \(x\) be any even integer.</p>
+<p>Then,</p>
+<div class="math-card">\[x = 2m\]</div>
+<p>Now square both sides:</p>
+<div class="math-card">\[x^2 = \(2m\)^2\]</div>
+<div class="math-card">\[x^2 = 4m^2\]</div>
+<p>Let,</p>
+<div class="math-card">\[q = m^2\]</div>
+<p>So,</p>
+<div class="math-card">\[x^2 = 4q\]</div>
+<p>Therefore, the square of an even integer is divisible by \(4\).</p>
+<div class="soft-divider"></div>
+</section>
+<section class="lesson-card" id="extra-practice-advanced-level"><div class="section-kicker">CBSE Class 10 • Real Numbers</div><h1>Extra Practice: Advanced Level</h1>
+<h2 id="q5-show-that-the-square-of-any-integer-is-of-the-form-4q-or-4q-1">Q5. Show that the square of any integer is of the form \(4q\) or \(4q+1\)</h2>
+<p>Let \(a\) be any integer.</p>
+<p>By Euclid’s Division Lemma with divisor \(2\):</p>
+<div class="math-card">\[a = 2q\]</div>
+<p>or</p>
+<div class="math-card">\[a = 2q+1\]</div>
+<p>Now square both cases.</p>
+<div class="soft-divider"></div>
+<h3 id="case-1-a-2q">Case 1: \(a = 2q\)</h3>
+<div class="math-card">\[a^2 = \(2q\)^2\]</div>
+<div class="math-card">\[a^2 = 4q^2\]</div>
+<p>Let,</p>
+<div class="math-card">\[m = q^2\]</div>
+<p>So,</p>
+<div class="math-card">\[a^2 = 4m\]</div>
+<div class="soft-divider"></div>
+<h3 id="case-2-a-2q-1">Case 2: \(a = 2q+1\)</h3>
+<div class="math-card">\[a^2 = \(2q+1\)^2\]</div>
+<div class="math-card">\[a^2 = 4q^2+4q+1\]</div>
+<div class="math-card">\[a^2 = 4\(q^2+q\)+1\]</div>
+<p>Let,</p>
+<div class="math-card">\[m = q^2+q\]</div>
+<p>So,</p>
+<div class="math-card">\[a^2 = 4m+1\]</div>
+<p>Therefore, the square of any integer is of the form:</p>
+<div class="math-card">\[4m\]</div>
+<p>or</p>
+<div class="math-card">\[4m+1\]</div>
+<div class="soft-divider"></div>
+<h2 id="q6-prove-that-no-perfect-square-is-of-the-form-3m-2">Q6. Prove that no perfect square is of the form \(3m+2\)</h2>
+<p>From Example 5, we know that the square of any positive integer is only of the form:</p>
+<div class="math-card">\[3m\]</div>
+<p>or</p>
+<div class="math-card">\[3m+1\]</div>
+<p>It is never of the form:</p>
+<div class="math-card">\[3m+2\]</div>
+<p>Therefore, no perfect square can be of the form \(3m+2\).</p>
+<div class="soft-divider"></div>
+</section>
+<section class="lesson-card" id="board-exam-answer-template"><div class="section-kicker">CBSE Class 10 • Real Numbers</div><h1>Board Exam Answer Template</h1>
+<p>Use this format for all such questions:</p>
+<pre class="code-box"><code>Let a be any positive integer.
+
+By Euclid’s Division Lemma, for divisor b, there exist integers q and r such that
+
+a = bq + r, where 0 ≤ r &lt; b.
+
+Therefore, possible values of r are ...
+
+So, a can be written as ...
+
+Now considering the required condition, we get ...
+
+Hence proved.</code></pre>
+<div class="soft-divider"></div>
+</section>
+<section class="lesson-card" id="one-page-revision-summary"><div class="section-kicker">CBSE Class 10 • Real Numbers</div><h1>One-Page Revision Summary</h1>
+<h2 id="euclid-s-division-lemma">Euclid’s Division Lemma</h2>
+<div class="math-card">\[a = bq+r,\quad 0 \le r < b\]</div>
+<h2 id="possible-forms">Possible Forms</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Divisor</th><th>Forms</th></tr></thead>
+<tbody>
+<tr><td>\(2\)</td><td>\(2q,\ 2q+1\)</td></tr>
+<tr><td>\(3\)</td><td>\(3q,\ 3q+1,\ 3q+2\)</td></tr>
+<tr><td>\(4\)</td><td>\(4q,\ 4q+1,\ 4q+2,\ 4q+3\)</td></tr>
+<tr><td>\(5\)</td><td>\(5q,\ 5q+1,\ 5q+2,\ 5q+3,\ 5q+4\)</td></tr>
+</tbody>
+</table></div>
+<h2 id="must-remember-results">Must-Remember Results</h2>
+<div class="math-card">\[\text{Even integer} = 2q\]</div>
+<div class="math-card">\[\text{Odd integer} = 2q+1\]</div>
+<div class="math-card">\[\text{Odd integer} = 4q+1 \text{ or } 4q+3\]</div>
+<div class="math-card">\[\text{Square of odd integer} = 4q+1\]</div>
+<div class="math-card">\[\text{Square of any integer} = 3m \text{ or } 3m+1\]</div>
+<div class="math-card">\[\text{Cube of any integer} = 9m,\ 9m+1,\text{ or }9m+8\]</div>
+<div class="soft-divider"></div>
+</section>
+<section class="lesson-card" id="final-learning-flow"><div class="section-kicker">CBSE Class 10 • Real Numbers</div><h1>Final Learning Flow</h1>
+<p>First understand <strong>division and remainder</strong>.</p>
+<p>Then understand:</p>
+<div class="math-card">\[a = bq+r\]</div>
+<p>Then learn that the possible remainders decide all possible forms.</p>
+<p>After that, use square and cube identities to prove advanced results.</p>
+<p>This chapter becomes easy when the student remembers:</p>
+<div class="math-card">\[\text{Number form depends on remainder.}\]</div>
+<p>That is the heart of Euclid’s Division Lemma.</p>
+</section>
+</main>
+<footer class="footer">Class 10 CBSE Real Numbers • Euclid’s Division Lemma Applications • Printable Study Page</footer>
+</div>
+<a class="top-link" href="#top">↑ Top</a>
+<script>
+(function(){
+  const links = Array.from(document.querySelectorAll('.nav-list a'));
+  const sections = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  const clear = () => links.forEach(a => a.classList.remove('active-topic'));
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        clear();
+        const a = document.querySelector('.nav-list a[href="#'+entry.target.id+'"]');
+        if(a){ a.classList.add('active-topic'); }
+      }
+    });
+  }, {rootMargin:'-20% 0px -70% 0px', threshold:0.01});
+  sections.forEach(s => obs.observe(s));
+})();
+</script>
+</body>
+</html>
